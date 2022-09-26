@@ -1,14 +1,15 @@
 <?php 
 namespace App\Services;
-use App\Repositories\PostRepository;
+use App\Repositories\Post\PostRepository;
 use App\Services\BaseService;
 use Illuminate\Http\JsonResponse;
 
 class PostService extends BaseService
 {
+    private PostRepository $postRepository;
     public function __construct(PostRepository $postRepository)
     {
-        dd('Construct Post Service');
+        
         $this->postRepository=$postRepository;
     }
     public function createPost($request):JsonResponse
@@ -17,9 +18,8 @@ class PostService extends BaseService
     }
     public function list()
     {
-        dd("OK");
         $posts=$this->postRepository->list();
-         return null;
+        return $posts;
     }
 }
 

@@ -1,13 +1,15 @@
 <?php  
-namespace App\Repositories;
+namespace App\Repositories\Post;
+use App\Models\Post;
 class PostRepository{
-    protected function model()
+    public function model()
     {
        return Post::class;
     }
     public function list()
     {
-        return $this->model->get();
+        
+        return $this->model()::all();
     }
 }
 

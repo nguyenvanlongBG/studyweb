@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\PostService;
 class PostController extends Controller
 {
-    protected PostService $postService;  
+    private PostService $postService;  
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +18,7 @@ class PostController extends Controller
     
     public function index()
     {
-        dd("OK Men");
+      
         return $this->postService->list();
     }
 
