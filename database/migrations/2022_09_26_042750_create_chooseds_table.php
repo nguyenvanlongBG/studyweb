@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('choose_questions', function (Blueprint $table) {
-            $table->id();
+        Schema::create('chooseds', function (Blueprint $table) {
+            $table->integer('id', true);
+            $table->integer('choose_question_id');
+            $table->foreign('choose_question_id')->references('id')->on('choose_questions');
             $table->integer('question_test_id');
             $table->foreign('question_test_id')->references('id')->on('question_tests');
-            $table->string('content');
+            $table->integer('exam_id');
+            $table->foreign('exam_id')->references('id')->on('exams');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('choose_questions');
+        Schema::dropIfExists('chooseds');
     }
 };

@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('question_normals', function (Blueprint $table) {
-            $table->id();
-            $table->string('content');
+        Schema::create('exams', function (Blueprint $table) {
+            $table->integer('id', true);
+            $table->float('point');
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('test_id');
+            $table->foreign('test_id')->references('id')->on('tests');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question_normals');
+        Schema::dropIfExists('exams');
     }
 };

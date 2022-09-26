@@ -12,7 +12,7 @@ class QuestionTest extends Model
         'content',
         'point',
         'test_id',
-        'result_id',
+        // 'result_id',
     ];
     public function test()
     {
@@ -25,5 +25,9 @@ class QuestionTest extends Model
     public function choosed()
     {
         $this->hasMany(Choosed::class);
+    }
+    public function result()
+    {
+        $this->hasOne(CorrectAnswer::class);
     }
 }

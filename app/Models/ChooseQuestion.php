@@ -20,4 +20,5 @@ class ChooseQuestion extends Model
     {
         $this->hasMany(Choosed::class);
     }
+    
 }

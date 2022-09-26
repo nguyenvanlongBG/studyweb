@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('classroom_tests', function (Blueprint $table) {
-            $table->id();
-            $table->integer('classroom_id');
-            $table->foreign('classroom_id')->references('id')->on('classrooms');
-            $table->integer('test_id');
-            $table->foreign('test_id')->references('id')->on('tests');
+        Schema::create('correct_answers', function (Blueprint $table) {
+            $table->integer('id', true);
+            $table->integer('question_test_id');
+            $table->foreign('question_test_id')->references('id')->on('question_tests');
+            $table->integer('correct_answer');
+            $table->foreign('correct_answer')->references('id')->on('choose_questions');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classroom_tests');
+        Schema::dropIfExists('correct_answers');
     }
 };
