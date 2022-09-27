@@ -1,16 +1,21 @@
 <?php  
 namespace App\Repositories\Post;
 use App\Models\Post;
-class PostRepository{
+use App\Repositories\AbstractRepository;
+
+class PostRepository extends AbstractRepository{
     public function model()
     {
        return Post::class;
     }
+  
     public function list()
     {
-        
-        return $this->model()::all();
+        // return $this->model->all();
+        // dd($this->model);
+        return $this->model->where('status', '=','1')->get();
     }
+  
 }
 
 ?>

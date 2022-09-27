@@ -15,10 +15,14 @@ class PostController extends Controller
     public function __construct(PostService $postService){
         $this->postService=$postService;
     }
-    
+    public function approvePost($id){
+        // dd($id);
+        // dd($this->postService->approvePost($id));
+        return $this->postService->approvePost($id);
+    }
     public function index()
     {
-      
+        // dd($this->postService->list());
         return $this->postService->list();
     }
 
@@ -86,4 +90,5 @@ class PostController extends Controller
     {
         //
     }
+
 }

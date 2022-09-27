@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/createPost', [PostController::class, 'create']);
 Route::get('/listPost', [PostController::class, 'index']);
 Route::get('/listClass', [ClassroomController::class, 'index']);
+Route::put('/updatePost/{id}', [PostController::class, 'approvePost']);

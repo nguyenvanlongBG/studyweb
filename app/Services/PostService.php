@@ -18,8 +18,22 @@ class PostService extends BaseService
     }
     public function list()
     {
+        
         $posts=$this->postRepository->list();
+       
         return $posts;
+    }
+    public function approvePost($id){
+        // dd($id);
+        $data=[
+            'content'=>'Update',
+            'status'=>'1'
+        ];
+        if( $this->postRepository->update($id,$data)){
+            return "true";
+        };
+        return "false";
+        // dd( $this->postRepository->update($id,$data));
     }
 }
 
