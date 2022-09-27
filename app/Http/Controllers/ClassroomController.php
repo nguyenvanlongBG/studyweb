@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClassroomRequest;
+use App\Models\ClassroomUser;
+use App\Services\ClassroomService;
 use Illuminate\Http\Request;
 
 class ClassroomController extends Controller
 {
+    private ClassroomService $classroomService;
+    public function __construct(ClassroomService $classroomService){
+        $this->classroomService=$classroomService;
+    } 
     /**
      * Display a listing of the resource.
      *
@@ -15,15 +22,19 @@ class ClassroomController extends Controller
     {
         dd("Classroom Controller");
     }
-
+    public function approveUser($id)
+    {
+        $this->classroomService->approveUser($id);
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(ClassroomRequest $request)
     {
-        //
+        
+        $this->classroomService->createClassroom($request);
     }
 
     /**

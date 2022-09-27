@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Models\RequestClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +26,6 @@ Route::get('/listPost', [PostController::class, 'index']);
 Route::get('/createPost', [PostController::class, 'create']);
 Route::get('/listClass', [ClassroomController::class, 'index']);
 Route::put('/updatePost/{id}', [PostController::class, 'approvePost']);
+Route::post('/createClassroom', [ClassroomController::class, 'create']);
+Route::post('/createRequest', [UserController::class, 'createRequest']);
+Route::post('/approveUser/{id}', [ClassroomController::class, 'approveUser']);
