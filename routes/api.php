@@ -29,3 +29,4 @@ Route::put('/updatePost/{id}', [PostController::class, 'approvePost']);
 Route::post('/createClassroom', [ClassroomController::class, 'create']);
 Route::post('/createRequest', [UserController::class, 'createRequest']);
 Route::post('/approveUser/{id}', [ClassroomController::class, 'approveUser']);
+Route::get('/listUser/{id}', [ClassroomController::class, 'listUser']);

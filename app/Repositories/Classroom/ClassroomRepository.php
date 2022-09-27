@@ -2,6 +2,7 @@
 namespace App\Repositories\Classroom;
 
 use App\Models\Classroom;
+use App\Models\ClassroomUser;
 use App\Repositories\AbstractRepository;
 
 class ClassroomRepository extends AbstractRepository{
@@ -14,9 +15,10 @@ class ClassroomRepository extends AbstractRepository{
     {
         return $this->model->where('status', '=','1')->get();
     }
-    public function listUser()
+    public function listUser($idClass)
     {
-        return $this->model->where('status', '=','1')->get();
+        $users=ClassroomUser::where('classroom_id', '=',$idClass)->join('users', 'users.id','=','user_id')->get();
+        return $users;
     }
   
 }

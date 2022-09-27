@@ -42,9 +42,9 @@ class ClassroomService extends BaseService
         ];
         ClassroomUser::create($data);
     }
-    public function listUser()
+    public function listUser($idClass)
     {
-        $users=$this->classroomRepository->listUser();
+        $users=$this->classroomRepository->listUser($idClass);
         return $users;
     }
 }

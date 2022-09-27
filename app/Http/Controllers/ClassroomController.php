@@ -22,6 +22,11 @@ class ClassroomController extends Controller
     {
         dd("Classroom Controller");
     }
+    public function listUser($id)
+    {
+       
+       return $this->classroomService->listUser($id);
+    }
     public function approveUser($id)
     {
         $this->classroomService->approveUser($id);
