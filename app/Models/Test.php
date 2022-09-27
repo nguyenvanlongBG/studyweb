@@ -10,6 +10,7 @@ class Test extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'status',
         'time_start',
         'time_end',
     ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use App\Services\PostService;
 class PostController extends Controller
@@ -31,8 +32,10 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(PostRequest $request)
     {
+        return $this->postService->createPost($request);
+       
     }
 
     /**

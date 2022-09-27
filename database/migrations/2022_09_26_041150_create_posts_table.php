@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->boolean('status');
+            $table->boolean('approve');
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <?php 
 namespace App\Services;
 use App\Repositories\Post\PostRepository;
+use App\Http\Requests\PostRequest;
 use App\Services\BaseService;
 use Illuminate\Http\JsonResponse;
 
@@ -12,9 +13,22 @@ class PostService extends BaseService
         
         $this->postRepository=$postRepository;
     }
-    public function createPost($request):JsonResponse
+    public function storeImage(PostRequest $request){
+        $path=$request->file('content')->store('public/images');
+        return $path;
+      }
+    public function createPost(PostRequest $request)
     {
-         return $this->sendError(null, __('admin.message.error'));
+        $path=$this->storeImage($request);
+        $data=[
+            'user_id'=>$request['user_id'],
+            'content'=> $path,
+            'status'=>'0'
+        ];
+        if($this->postRepository->create($data)){
+             return true;
+        }
+        return false;
     }
     public function list()
     {
@@ -26,14 +40,12 @@ class PostService extends BaseService
     public function approvePost($id){
         // dd($id);
         $data=[
-            'content'=>'Update',
             'status'=>'1'
         ];
         if( $this->postRepository->update($id,$data)){
             return "true";
         };
         return "false";
-        // dd( $this->postRepository->update($id,$data));
     }
 }
 
