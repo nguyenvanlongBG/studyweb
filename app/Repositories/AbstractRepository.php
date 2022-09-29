@@ -14,14 +14,31 @@ public function builder(){
     $this->model->newQuery();
 }
 public function appplyConditions(array $where){
-    foreach($where as $field => $value ){
-        if( is_array($value)){
+    foreach($where as $field=>$value){
+          if(is_array($value)){
             list($field,$condition,$val)=$value;
-            $this->model=$this->model->where($field,$condition, $val);
+            $this->model=$this->model->where($field, $condition, $val);
+          }else{
+            $this->model=$this->model->where($field, '=',$value);
+          }
+    }
+}
+public function findWhere($where, $columns = ['*'], $rank="")
+{
+    $this->appplyConditions($where);
+    $data=null;
+    if($rank==""){
+        $data=$this->model->select($columns)->get();
+    }else{
+        if($rank=="first"){
+            $data=$this->model->select($columns)->first();
         }else{
-            $this->model=$this->model->where($field, '=', $value);
+            $data=$this->model->select($columns)->latest()->get();
         }
     }
+    dd($data);
+    $this->setModel();
+    return $data;           
 }
 public function all(){
     $this->model->all();
@@ -32,6 +49,9 @@ return $this->model->with($relations)->find($id, $columns);
 
 public function create(array $attributes){
         return $this->model->create($attributes);
+}
+public function createMany(array $data){
+    return $this->model->insert($data);
 }
 public function update($id, array $attributes){
     $result=$this->find($id);
@@ -50,12 +70,6 @@ public function delete($id){
     return false;
 }
 
-public function findWhere($where, $columns = ['*'], $relations = [])
-{
-    $this->appplyConditions($where);
-    $model=$this->builder->select($columns)->with($relations)->get();
-    $this->setModel();
-    return $model;           
-}
+
 }
 ?>
