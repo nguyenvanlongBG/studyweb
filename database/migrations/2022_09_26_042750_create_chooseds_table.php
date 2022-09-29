@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('chooseds', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->integer('choose_question_id');
-            $table->foreign('choose_question_id')->references('id')->on('choose_questions');
+            $table->integer('choosed');
+            $table->foreign('choosed')->references('id')->on('choose_questions');
             $table->integer('question_test_id');
             $table->foreign('question_test_id')->references('id')->on('question_tests');
             $table->integer('exam_id');

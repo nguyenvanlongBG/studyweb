@@ -10,7 +10,6 @@ class PostService extends BaseService
     private PostRepository $postRepository;
     public function __construct(PostRepository $postRepository)
     {
-        
         $this->postRepository=$postRepository;
     }
     public function storeImage(PostRequest $request){
@@ -19,10 +18,12 @@ class PostService extends BaseService
       }
     public function createPost(PostRequest $request)
     {
+       
         $path=$this->storeImage($request);
         $data=[
             'user_id'=>$request['user_id'],
             'content'=> $path,
+            'approve'=>$request['approve'],
             'status'=>'0'
         ];
         if($this->postRepository->create($data)){

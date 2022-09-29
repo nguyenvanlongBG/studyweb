@@ -2,30 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostRequest;
+use App\Services\ChooseQuestionService;
 use Illuminate\Http\Request;
-use App\Services\PostService;
-class PostController extends Controller
+
+class ChooseQuestionController extends Controller
 {
-    private PostService $postService;  
+    private ChooseQuestionService $chooseQuestionService;
+    public function __construct(ChooseQuestionService $chooseQuestionService)
+    {
+        $this->chooseQuestionService=$chooseQuestionService;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(PostService $postService){
-        dd($postService);
-        $this->postService=$postService;
-    }
-    public function approvePost($id){
-        // dd($id);
-        // dd($this->postService->approvePost($id));
-        return $this->postService->approvePost($id);
-    }
     public function index()
     {
-        // dd($this->postService->list());
-        return $this->postService->list();
+        //
     }
 
     /**
@@ -33,11 +27,9 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(PostRequest $request)
+    public function create(Request $request)
     {
-        dd("Create");
-        return $this->postService->createPost($request);
-       
+        $this->chooseQuestionService->create($request);
     }
 
     /**
@@ -95,5 +87,4 @@ class PostController extends Controller
     {
         //
     }
-
 }

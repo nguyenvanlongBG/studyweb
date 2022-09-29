@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('name');
+            $table->boolean('access');
             $table->boolean('status');
+//Status =0 Dừng Status=1 Chạy
             $table->time('time_start');
             $table->time('time_end');
             $table->timestamps();

@@ -9,7 +9,7 @@ class Choosed extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'choose_question_id',
+        'choosed',
         'question_test_id',
         'exam_id',
     ];
@@ -23,6 +23,6 @@ class Choosed extends Model
     }
     public function chooseQuestion()
     {
-        $this->belongsTo(ChooseQuestion::class);
+        $this->belongsTo(ChooseQuestion::class,'choosed');
     }
 }
