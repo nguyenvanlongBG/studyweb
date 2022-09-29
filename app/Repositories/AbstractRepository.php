@@ -33,10 +33,10 @@ public function findWhere($where, $columns = ['*'], $rank="")
         if($rank=="first"){
             $data=$this->model->select($columns)->first();
         }else{
-            $data=$this->model->select($columns)->latest()->get();
+            $data=$this->model->select($columns)->latest()->first();
         }
     }
-    dd($data);
+
     $this->setModel();
     return $data;           
 }

@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\ChooseQuestionController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\CorrectAnswerController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuestionTestController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Models\CorrectAnswer;
 use App\Models\RequestClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +37,7 @@ Route::post('/createRequest', [UserController::class, 'createRequest']);
 Route::post('/approveUser/{id}', [ClassroomController::class, 'approveUser']);
 Route::get('/listUser/{id}', [ClassroomController::class, 'listUser']);
 Route::post('/createTest', [TestController::class, 'create']);
+Route::post('/createCorrectAnswer', [CorrectAnswerController::class, 'create']);
 Route::post('/createQuestionTest', [QuestionTestController::class, 'create']);
 Route::post('/createChooseQuestion', [ChooseQuestionController::class, 'create']);
 Route::post('/doTest', [ExamController::class, 'doTest']);
