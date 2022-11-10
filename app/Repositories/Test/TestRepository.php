@@ -12,13 +12,14 @@ class TestRepository extends AbstractRepository{
   
     public function list()
     {
-        
+        return $this->model->all();
     }
     public function listUser($idClass)
     {
        
         
     }
+   
   
 }
 

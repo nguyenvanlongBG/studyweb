@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TestService;
 use Illuminate\Http\Request;
-
-class TestController extends Controller
+use App\Services\QuestionNormalService;
+class QuestionNormalController extends Controller
 {
-    private TestService $testService;
-    public function __construct(TestService $testService)
-    {
-        $this->testService=$testService;
+    private QuestionNormalService $questionNormalService;
+    public function __construct(QuestionNormalService $questionNormalService){
+       $this->questionNormalService=$questionNormalService;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->testService->list();
+        // dd($this->questionNormalService->list());
+        return $this->questionNormalService->list();
     }
 
     /**
@@ -29,8 +28,7 @@ class TestController extends Controller
      */
     public function create(Request $request)
     {
-        // dd($request);
-        $this->testService->create($request);
+        $this->questionNormalService->create($request);
     }
 
     /**
@@ -52,8 +50,7 @@ class TestController extends Controller
      */
     public function show($id)
     {
-        // dd($request->input('idTest'));
-      return $this->testService->show($id);
+        //
     }
 
     /**

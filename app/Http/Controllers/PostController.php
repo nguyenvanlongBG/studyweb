@@ -14,7 +14,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function __construct(PostService $postService){
-        dd($postService);
+        // dd($postService);
         $this->postService=$postService;
     }
     public function approvePost($id){
@@ -35,7 +35,7 @@ class PostController extends Controller
      */
     public function create(PostRequest $request)
     {
-        dd("Create");
+        // dd("Create");
         return $this->postService->createPost($request);
        
     }

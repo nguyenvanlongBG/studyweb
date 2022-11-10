@@ -41,7 +41,7 @@ public function findWhere($where, $columns = ['*'], $rank="")
     return $data;           
 }
 public function all(){
-    $this->model->all();
+    return $this->model->all();
 }
 public function find($id, $columns=['*'], $relations=[]){
 return $this->model->with($relations)->find($id, $columns);

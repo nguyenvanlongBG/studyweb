@@ -2,16 +2,31 @@
 namespace App\Services;
 
 use App\Repositories\Question\QuestionTestRepository;
+use App\Repositories\ChooseQuestion\ChooseQuestionRepository;
 
 class QuestionTestService extends BaseService{
 
 private QuestionTestRepository $questionTestRepository;
-public function __construct(QuestionTestRepository $questionTestRepository )
+private ChooseQuestionRepository $choiceQuestionRepository;
+public function __construct(QuestionTestRepository $questionTestRepository, ChooseQuestionRepository $choiceQuestionRepository )
 {
     $this->questionTestRepository=$questionTestRepository;
+    $this->choiceQuestionRepository=$choiceQuestionRepository;
 }
-public function list(){
-
+public function listByIdTest($idTest){
+    // dd($idTest);
+    $listquestions=$this->questionTestRepository->findWhere(['test_id'=>$idTest], ['*'], "");
+    $dataQuestions=[];
+    foreach($listquestions as $question){
+        $choices=$this->choiceQuestionRepository->findWhere(['question_test_id'=>$question['id']], ['*'],"" );
+        $dataQuestion=[
+            'question'=>$question,
+            'choices'=>$choices
+        ];
+        $dataQuestions[]=$dataQuestion;
+    };
+    
+   return $dataQuestions;
 }
 public function create($request){
     $data=[

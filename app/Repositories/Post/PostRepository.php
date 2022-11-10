@@ -11,8 +11,7 @@ class PostRepository extends AbstractRepository{
   
     public function list()
     {
-       
-        return $this->model->where('status', '=','1')->get();
+        return $this->model->where('approve', '=','1')->get();
     }
   
 }

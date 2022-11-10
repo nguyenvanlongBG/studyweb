@@ -3,7 +3,8 @@ namespace App\Services;
 
 use App\Repositories\ChooseQuestion\ChooseQuestionRepository;
 
-class ChooseQuestionService extends BaseService{
+class ChooseQuestionService extends BaseService
+{
 
 private ChooseQuestionRepository $chooseQuestionRepository;
 public function __construct(ChooseQuestionRepository $chooseQuestionRepository )

@@ -17,11 +17,15 @@ class QuestionTestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($idTest)
     {
-        //
+        
     }
-
+    public function listByIdTest(Request $request)
+    {
+       
+        return $this->questionTestService->listByIdTest($request->idTest);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -51,7 +55,7 @@ class QuestionTestController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

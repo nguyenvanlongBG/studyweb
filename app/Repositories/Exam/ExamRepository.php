@@ -13,7 +13,7 @@ class ExamRepository extends AbstractRepository{
   
     public function list()
     {
-        return null;
+        return this->model()->all();
     }
   
   
