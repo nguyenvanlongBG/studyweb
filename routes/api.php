@@ -45,6 +45,9 @@ Route::post('/createQuestionTest', [QuestionTestController::class, 'create']);
 Route::get('/test/questions', [QuestionTestController::class, 'listByIdTest']);
 Route::post('/createQuestionNormal', [QuestionNormalController::class, 'create']);
 Route::get('/getQuestionNormal', [QuestionNormalController::class, 'index']);
+Route::post('/createTest', [TestController::class, 'create']);
+Route::post('/getTests', [TestController::class, 'getTests']);
+
 Route::post('/createQuestionNormal', [QuestionNormalController::class, 'create']);
 Route::post('/createAnswerNormal', [AnswerNormalController::class, 'create']);
 Route::get('/getAnswerByIdQuestionNormal', [AnswerNormalController::class,'listByIdQuestion']);
