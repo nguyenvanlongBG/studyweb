@@ -25,7 +25,7 @@ class UserService extends BaseService
             'classroom_id'=>$request['classroom_id']
         ];
         
-        RequestClass::create($data);
+        \App\Models\Request::create($data);
     }
     
    

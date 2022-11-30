@@ -21,7 +21,13 @@ class TestController extends Controller
     {
         return $this->testService->list();
     }
-
+public function list(Request $request)
+    {
+        // if($request->params)
+        
+        return $this->testService->list($request);
+        
+    }
     /**
      * Show the form for creating a new resource.
      *

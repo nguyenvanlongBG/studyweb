@@ -8,21 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
     use HasFactory;
-    protected $fillable = [
+    protected $fillable=[
         'point',
-        'test_id',
         'user_id',
+        'test_id'
     ];
-    public function user()
-    {
-        $this->belongsTo(User::class);
+    public function users(){
+        return $this->belongsTo(User::class);
     }
-    public function test()
-    {
-        $this->belongsTo(Test::class);
+      public function tests(){
+        return $this->belongsTo(Test::class);
     }
-    public function choosed()
-    {
-        $this->hasMany(Choosed::class);
+      public function chooseds(){
+        return $this->hasMany(Choosed::class);
     }
 }

@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         // DB::table('users')->truncate();
 
         $users = [
-        	 ['Nguyễn Văn A', 'nguyenvana@gmail.com', '123456789','1', '1','1000'],
-            ['Nguyễn Thị B', 'nguyenthib@gmail.com', '123456789','1','1','100'],
+        	 ['Nguyễn Văn A', 'nguyenvana@gmail.com', '123456789','1', '1','1000', '1000','2000'],
+            ['Nguyễn Thị B', 'nguyenthib@gmail.com', '123456789','1','1','100','2000'],
         ];
  
         foreach ($users as $user) {
@@ -29,7 +29,8 @@ class UserSeeder extends Seeder
                 'password' => $user[2],
                 'role_id' => $user[3],
                 'level'=>$user[4],
-                'point'=>$user[5]
+                'point'=>$user[5],
+                'asset'=>$user[6]
             ]);
         }
 

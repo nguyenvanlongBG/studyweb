@@ -1,15 +1,15 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\ChooseQuestion\ChooseQuestionRepository;
+use App\Repositories\ChooseQuestionTest\ChooseQuestionTestRepository;
 
 class ChooseQuestionService extends BaseService
 {
 
-private ChooseQuestionRepository $chooseQuestionRepository;
-public function __construct(ChooseQuestionRepository $chooseQuestionRepository )
+private ChooseQuestionTestRepository $chooseQuestionTestRepository;
+public function __construct(ChooseQuestionTestRepository $chooseQuestionTestRepository )
 {
-    $this->chooseQuestionRepository=$chooseQuestionRepository;
+    $this->chooseQuestionTestRepository=$chooseQuestionTestRepository;
 }
 public function list(){
 
@@ -19,7 +19,7 @@ public function create($request){
         'question_test_id'=>$request['question_test_id'],
         'content'=>$request['content'],
     ];
-    $this->chooseQuestionRepository->create($data);
+    $this->chooseQuestionTestRepository->create($data);
 }
 public function update(){
     

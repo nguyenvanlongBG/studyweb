@@ -21,9 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
         'level',
         'point',
+        'asset'
     ];
 
     /**
@@ -46,30 +47,71 @@ class User extends Authenticatable
     ];
     public function posts()
     {
-        $this->hasMany(Post::class);
+       return $this->hasMany(Post::class);
     }
     public function exams()
     {
-        $this->hasMany(Exam::class);
+       return $this->hasMany(Exam::class);
     }
-    public function answerNormal()
+    public function answerNormals()
     {
-        $this->hasMany(AnswerNormal::class);
+       return $this->hasMany(AnswerNormal::class);
     }
     public function roles()
     {
-        $this->hasMany(Role::class);
+       return $this->hasMany(Role::class);
     }
-    public function classroomUser()
+
+      public function groups()
     {
-        $this->hasMany(ClassroomUser::class);
+       return $this->belongsToMany(Group::class, 'group_users', 'user_id','group_id');
     }
-    public function answerTest()
+       public function transactions()
     {
-        $this->hasMany(AnswerTest::class);
+       return $this->hasMany(Transaction::class);
     }
-    public function classrooms()
+    public function answerTests()
     {
-        $this->belongsToMany(Classroom::class, 'classroom_users');
+       return $this->hasMany(AnswerQuestionTest::class);
     }
+  public function userTests()
+    {
+       return $this->belongsToMany(UserTest::class);
+    }
+    public function Message()
+    {
+       return $this->hasMany(Message::class);
+    }
+       public function Request()
+    {
+       return $this->hasMany(Request::class);
+    }   
+       public function notifications()
+    {
+       return $this->belongsToMany(Notification::class, 'notification_users', 'user_id','notification_id');
+    }
+        public function missions()
+    {
+       return $this->belongsToMany(Mission::class, 'mission_users', 'user_id','mission_id');
+    }
+      public function comments()
+    {
+       return $this->hasMany(Comment::class);
+    }
+       public function confidentials()
+    {
+       return $this->hasMany(Confidential::class);
+    }
+     public function reacts()
+    {
+       return $this->hasMany(React::class, 'react_users');
+    }
+     public function questionCompetitions()
+    {
+       return $this->belongsToMany(QuestionCompetition::class);
+    }
+    public function events(){
+      $this->belongsToMany(Event::class);
+    }
+    
 }

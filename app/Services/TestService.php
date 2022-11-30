@@ -1,8 +1,9 @@
 <?php
 namespace App\Services;
 
-use App\Models\AnswerTest;
-                                                     use App\Repositories\ChooseQuestion\ChooseQuestionRepository;
+use App\Models\AnswerQuestionTest;
+use App\Models\ChooseQuestionTest;
+use App\Repositories\ChooseQuestionTest\ChooseQuestionTestRepository;
 use App\Repositories\Question\QuestionTestRepository;
 use App\Repositories\Test\TestRepository;
 use Illuminate\Http\Request;
@@ -12,15 +13,23 @@ class TestService extends BaseService{
 private TestRepository $testRepository;
 private QuestionTestRepository $questionTestRepository;
 
-private AnswerTest $answerTestRepository;
-public function __construct(TestRepository $testRepository, QuestionTestRepository $questionTestRepository,  ChooseQuestionRepository $choiceQuestionRepository  )
+private AnswerQuestionTest $answerQuestionTestRepository;
+private ChooseQuestionTestRepository  $chooseQuestionTestRepository;
+public function __construct(TestRepository $testRepository, QuestionTestRepository $questionTestRepository,  ChooseQuestionTestRepository $chooseQuestionTestRepository  )
 {
     $this->testRepository=$testRepository;
     $this->questionTestRepository=$questionTestRepository;
-    $this->choiceQuestionRepository=$choiceQuestionRepository;
+    $this->chooseQuestionTestRepository=$chooseQuestionTestRepository;
 }
-public function list(){
-return $this->testRepository->all();
+public function list($request){
+    
+        $filter=array();
+        if(  $request->userId!=null){
+            $filter['userId']=$request->userId;
+           
+        }
+        // dd($filter);
+        return $this->testRepository->findWhere($filter, ['*'],"");
 }
 public function create(Request $request){
 $data=[
@@ -40,7 +49,7 @@ public function show($id){
     $test=$this->testRepository->find($id);
 
     $data=[
-        'test'=>$test,
+        'test'=>$test
     ];
     
     return $this->sendResponse($data, "OK");

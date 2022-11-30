@@ -10,6 +10,7 @@ use App\Http\Controllers\QuestionNormalController;
 use App\Http\Controllers\AnswerNormalController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Models\ChooseQuestionTest;
 use App\Models\CorrectAnswer;
 use App\Models\RequestClass;
 use Illuminate\Http\Request;
@@ -29,28 +30,43 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/createPost', [PostController::class, 'create']);
-Route::get('/listPost', [PostController::class, 'index']);
-Route::get('/createPost/{id}', [PostController::class, 'create']);
-Route::get('/listClass', [ClassroomController::class, 'index']);
-Route::put('/updatePost/{id}', [PostController::class, 'approvePost']);
-Route::post('/createClassroom', [ClassroomController::class, 'create']);
-Route::post('/createRequest', [UserController::class, 'createRequest']);
-Route::post('/approveUser/{id}', [ClassroomController::class, 'approveUser']);
-Route::get('/listUser/{id}', [ClassroomController::class, 'listUser']);
-Route::post('/createTest', [TestController::class, 'create']);
-Route::get('/showTest', [TestController::class, 'show']);
-Route::post('/createCorrectAnswer', [CorrectAnswerController::class, 'create']);
-Route::post('/createQuestionTest', [QuestionTestController::class, 'create']);
-Route::get('/test/questions', [QuestionTestController::class, 'listByIdTest']);
-Route::post('/createQuestionNormal', [QuestionNormalController::class, 'create']);
-Route::get('/getQuestionNormal', [QuestionNormalController::class, 'index']);
-Route::post('/createTest', [TestController::class, 'create']);
-Route::post('/getTests', [TestController::class, 'getTests']);
+Route::prefix('post')->group(function(){
+    Route::post('/create', [PostController::class, 'create']);
+    Route::get('/list', [PostController::class, 'index']);
+    Route::post('/update', [PostController::class, 'update']);
+    Route::post('/delete', [PostController::class, 'delete']);
+    // Route::get('/createPost/{id}', [PostController::class, 'create']);
+    Route::put('/approve/{id}', [PostController::class, 'approvePost']);
+});
+Route::prefix('group')->group(function(){
+    Route::get('/list', [GroupController::class, 'index']);
+    Route::post('/create', [GroupController::class, 'create']);
+    Route::post('/update', [GroupController::class, 'create']);
+    Route::post('/createRequest', [UserController::class, 'createRequest']);
+    Route::post('/approveUser/{id}', [GroupController::class, 'approveUser']);
+});
+Route::prefix('test')->group(function(){
+    Route::post('/create', [TestController::class, 'create']);
+    Route::get('/show', [TestController::class, 'show']);
+    Route::post('/list', [TestController::class, 'getTests']);
+    Route::post('/do', [ExamController::class, 'doTest']);
+    Route::post('/createResult', [CorrectAnswerController::class, 'create']);
+    Route::post('/createChoose', [ChooseQuestionTest::class, 'create']);
+    Route::post('/updateChoose', [ChooseQuestionTest::class, 'update']);
+    Route::post('/deleteChoose', [ChooseQuestionTest::class, 'create']);
+    Route::post('/chooses', [ChooseQuestionTest::class, 'list']);
+    Route::get('/questions', [QuestionTestController::class, 'listByIdTest']);
+    Route::post('/showQuestion', [QuestionTestController::class, 'show']);
+    Route::post('/createQuestion', [QuestionTestController::class, 'create']);
+    Route::post('/updateQuestion', [QuestionTestController::class, 'update']);
+    Route::post('/deleteQuestion', [QuestionTestController::class, 'delete']);
+});
 
-Route::post('/createQuestionNormal', [QuestionNormalController::class, 'create']);
-Route::post('/createAnswerNormal', [AnswerNormalController::class, 'create']);
-Route::get('/getAnswerByIdQuestionNormal', [AnswerNormalController::class,'listByIdQuestion']);
-Route::post('/doTest', [ExamController::class, 'doTest']);
-Route::get('/tests', [TestController::class, 'index']);
-Route::get('/tests/{id}', [TestController::class, 'show']);
+Route::get('/listUser/{id}', [ClassroomController::class, 'listUser']);
+
+Route::prefix('questionNormal')->group(function(){
+    Route::post('/create', [QuestionNormalController::class, 'create']);
+    Route::get('/list', [QuestionNormalController::class, 'index']);
+    Route::post('/createAnswer', [AnswerNormalController::class, 'create']);
+    Route::get('/answers', [AnswerNormalController::class,'list']);
+});
