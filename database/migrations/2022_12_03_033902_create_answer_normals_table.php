@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('answer_question_tests', function (Blueprint $table) {
-            $table->integer('id', true);
+        // Câu trả lời bình thường là câu trả lời gửi đi cho mọi người xem không tính điểm
+        Schema::create('answer_normals', function (Blueprint $table) {
+             $table->integer('id', true);
             $table->integer('question_id');
-            $table->text('content');
             $table->integer('user_id');
+            $table->text('content');
             $table->integer('fee');
+            $table->float('evaluate');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('answer_question_tests');
+        Schema::dropIfExists('answer_normals');
     }
 };

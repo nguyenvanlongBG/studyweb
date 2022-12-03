@@ -17,13 +17,15 @@ return new class extends Migration
             $table->integer('id', true);
             $table->string('name');
             $table->tinyInteger('type');
-            // type=0 exam, type=1 mission, type=2 competition
+             // type=0 exam, type=1 mission, type=2 competition
+            $table->integer('belong_id')->nullable();
+           // Bài kiểm tra trong lớp hay thuộc về mission
             $table->boolean('scope');
             //scope=0 public, scope=1 private in system
              $table->integer('fee');
-             $table->integer('point');
              $table->integer('candidates');
              $table->integer('reward_init');
+            $table->string('note');
             $table->timestamp('time_start')->useCurrent();
             $table->timestamp('time_finish')->nullable();
             

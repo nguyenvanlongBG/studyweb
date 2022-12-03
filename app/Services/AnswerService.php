@@ -2,18 +2,18 @@
 namespace App\Services;
 
 use App\Repositories\CorrectAnswer\CorrectAnswerRepository;
-use App\Repositories\Answer\AnswerNormalRepository;
+use App\Repositories\Answer\AnswerRepository;
 use Illuminate\Http\Request;
 
-class AnswerNormalService extends BaseService{
-private AnswerNormalRepository $answerNormalRepository;
-public function __construct(AnswerNormalRepository $answerNormalRepository)
+class AnswerService extends BaseService{
+private AnswerRepository $answerRepository;
+public function __construct(AnswerRepository $answerRepository)
 {
-    $this->answerNormalRepository=$answerNormalRepository;
+    $this->answerRepository=$answerRepository;
 }
-public function getAnswersByIdQuestionNormal($id){
+public function listByIdQuestion($id){
     // dd("OK");
-return $this->answerNormalRepository->getAnswersByIdQuestion($id);
+return $this->answerRepository->listByIdQuestion($id);
 }
 public function list(){
 

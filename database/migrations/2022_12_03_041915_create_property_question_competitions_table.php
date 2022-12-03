@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('result_question_tests', function (Blueprint $table) {
+        // When question has special property
+        Schema::create('property_question_competitions', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->integer('question_id');
-            $table->integer('result_question_test');
+            $table->integer('property_question_id')->comment('id property of question competition');
+            $table->string('suggestion')->comment('only big or small question has it');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('result_question_tests');
+        Schema::dropIfExists('property_question_competitions');
     }
 };

@@ -31,7 +31,7 @@ class AnswerNormalController extends Controller
     }
     public function listByIdQuestion(Request $request){
     // dd($request->id);
-      return  $this->answerNormalService->getAnswersByIdQuestionNormal($request->id);
+      return  $this->answerNormalService->getAnswersByIdQuestion($request->id);
     }
     /**
      * Store a newly created resource in storage.

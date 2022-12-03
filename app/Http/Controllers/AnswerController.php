@@ -2,33 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TestService;
+use App\Services\AnswerService;
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class AnswerController extends Controller
 {
-    private TestService $testService;
-    public function __construct(TestService $testService)
-    {
-        $this->testService=$testService;
+    
+    private AnswerService $answerService;
+    public function __construct(AnswerService $answerService){
+     $this->answerService=$answerService;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return $this->testService->list($request);
+        //
     }
-public function list(Request $request)
-    {
-        
-        // if($request->params)
-        dd($request);
-        return $this->testService->list($request);
-        
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -36,10 +29,17 @@ public function list(Request $request)
      */
     public function create(Request $request)
     {
-        // dd($request);
-        $this->testService->create($request);
+        $this->answerNormalService->create($request);
     }
-
+     public function list($id){
+    // dd($request->id);
+    
+      return  $this->answerService->listByIdQuestion($id);
+    }
+    public function listByIdQuestion(Request $request){
+    // dd($request->id);
+      return  $this->answerService->listByIdQuestion($request->id);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -59,18 +59,9 @@ public function list(Request $request)
      */
     public function show($id)
     {
-        // dd($request->input('idTest'));
-      return $this->testService->show($id);
+        //
     }
-    public function listQuestionTest($id, Request $request)
-    {
-        // dd($request->input('idTest'));
-        // dd($id);
-        // dd($request);
-            return $this->testService->listQuestion($id, $request->status);
-       
-      
-    }
+
     /**
      * Show the form for editing the specified resource.
      *

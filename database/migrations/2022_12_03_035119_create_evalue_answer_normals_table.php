@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('statisticals', function (Blueprint $table) {
-           $table->integer('id', true);
-           $table->integer('test_id');
-        //    Thống kê trong các bài thi chính thức h
-            $table->integer('item_subject_id');
+        Schema::create('evalue_answer_normals', function (Blueprint $table) {
+             $table->integer('id', true);
             $table->integer('user_id');
-            $table->integer('correct');
-            $table->integer('wrong');
-            $table->integer('total');
+            $table->integer('answer_normal_id');
+            $table->integer('evalue');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statisticals');
+        Schema::dropIfExists('evalue_answer_normals');
     }
 };

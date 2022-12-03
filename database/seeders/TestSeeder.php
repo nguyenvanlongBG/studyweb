@@ -16,21 +16,22 @@ class TestSeeder extends Seeder
     public function run()
     {
          $tests = [
-        	 ['Cuối kì 1','0', '0', '4','5', '0','200','11:02:11', '12:02:11'],
-              ['Cuối kì 2','0', '0', '4','5', '0','200','11:02:11', '12:02:11'],
+        	 ['Cuối kì 1','0',null, '0', '4', '0','200','Bài thi nâng cao','11:02:11', '12:02:11'],
+              ['Cuối kì 2','0',null, '0', '4', '0','200','Bài thi Olympic','11:02:11', '12:02:11'],
         ];
  
         foreach ($tests as $test) {
             Test::create([
                 'name' => $test[0],
                 'type' => $test[1],
-                'scope' => $test[2],
-                'fee' => $test[3],
-                'point'=>$test[4],
+                'belong_id'=>$test[2],
+                'scope' => $test[3],
+                'fee' => $test[4],
                 'candidates'=>$test[5],
                 'reward_init'=>$test[6],
-                'time_start'=>$test[7],
-                'time_finish'=>$test[8]
+                'note'=>$test[7],
+                'time_start'=>$test[8],
+                'time_finish'=>$test[9]
             ]);
         }
     }

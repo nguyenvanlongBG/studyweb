@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('answer_normals', function (Blueprint $table) {
+        Schema::create('item_subject_questions', function (Blueprint $table) {
             $table->integer('id', true);
             $table->integer('question_id');
-            $table->text('content');
-            $table->integer('user_id');
+            $table->integer('item_subject_id')->nullable(); 
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('answer_normals');
+        Schema::dropIfExists('item_subject_questions');
     }
 };

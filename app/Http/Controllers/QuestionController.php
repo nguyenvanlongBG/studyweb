@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TestService;
 use Illuminate\Http\Request;
-
-class TestController extends Controller
+use App\Services\QuestionService;
+class QuestionController extends Controller
 {
-    private TestService $testService;
-    public function __construct(TestService $testService)
-    {
-        $this->testService=$testService;
+    private QuestionService $questionService;
+    public function __construct(QuestionService $questionService){
+       $this->questionService=$questionService;
     }
     /**
      * Display a listing of the resource.
@@ -19,16 +17,15 @@ class TestController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->testService->list($request);
+        // dd($this->questionNormalService->list());
+        return $this->questionService->list();
     }
-public function list(Request $request)
-    {
-        
-        // if($request->params)
-        dd($request);
-        return $this->testService->list($request);
-        
-    }
+public function listQuestionNormals(){
+        return $this->questionService->questionNormals();
+}
+public function listQuestionTest(){
+        return $this->questionService->questionNormals();
+}
     /**
      * Show the form for creating a new resource.
      *
@@ -36,8 +33,7 @@ public function list(Request $request)
      */
     public function create(Request $request)
     {
-        // dd($request);
-        $this->testService->create($request);
+        $this->questionNormalService->create($request);
     }
 
     /**
@@ -59,18 +55,9 @@ public function list(Request $request)
      */
     public function show($id)
     {
-        // dd($request->input('idTest'));
-      return $this->testService->show($id);
+        //
     }
-    public function listQuestionTest($id, Request $request)
-    {
-        // dd($request->input('idTest'));
-        // dd($id);
-        // dd($request);
-            return $this->testService->listQuestion($id, $request->status);
-       
-      
-    }
+
     /**
      * Show the form for editing the specified resource.
      *

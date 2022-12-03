@@ -8,16 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class AnswerQuestionTest extends Model
 {
     use HasFactory;
+    
     protected $fillable=[
-'question_id',
-'content',
-'user_id',
-'fee'
+        'question_id',
+        'content'
     ];
-    public function questions(){
-        return $this->belongsTo(Question::class);
-    }
-        public function users(){
-        return $this->belongsTo(User::class);
-    }
+public function questionTests(){
+   return $this->belongsTo(Question::class);
+}
 }

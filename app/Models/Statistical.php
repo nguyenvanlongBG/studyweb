@@ -9,6 +9,7 @@ class Statistical extends Model
 {
     use HasFactory;
     protected $fillable=[
+        'test_id',
         'item_subject_id',
         'corect',
         'wrong',
@@ -20,5 +21,8 @@ class Statistical extends Model
     }
      public function itemSubjects(){
         $this->hasOne(ItemSubject::class);
+    }
+        public function tests(){
+        $this->belongsTo(Test::class);
     }
 }

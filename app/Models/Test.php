@@ -11,13 +11,15 @@ class Test extends Model
     protected $fillable=[
         'name',
         'type',
+        'belong_id',
         'scope',
         'fee',
-        'point',
         'candidates',
-        'reward_init',    
+        'reward_init', 
+        'note',   
         'time_start',
-        'time_end'
+        'time_finish',
+        
     ];
     public function groups(){ 
        return  $this->belongsToMany(Group::class) ;

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('test_id');
             $table->tinyInteger('role');
             // role=0 không có quyền, 1 xem, 2 chỉnh sửa
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->nullable();
             // status=0 chưa làm, status =1 đang làm status=2 làm xong
             $table->timestamps();
         });

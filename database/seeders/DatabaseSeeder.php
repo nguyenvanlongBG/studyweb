@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Answer;
+use App\Models\AnswerNormal;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,13 +21,13 @@ class DatabaseSeeder extends Seeder
         $this->call(TestSeeder::class);
         $this->call(SubjectSeeder::class);
         $this->call(ItemSubjectSeeder::class);
-        $this->call(QuestionTestSeeder::class);
-        $this->call(ChooseQuestionTestSeeder::class);
         $this->call(PostSeeder::class); 
-        $this->call(QuestionNormalSeeder::class);
         $this->call(QuestionSeeder::class);
-        $this->call(DependenceSeeder::class);
-
+        $this->call(AnswerNormalSeeder::class);
+        $this->call(UserTestSeeder::class);
+        $this->call(AnswerTestSeeder::class);
+        $this->call(PropertyQuestionSeeder::class);
+         $this->call(AnswerQuestionTestSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

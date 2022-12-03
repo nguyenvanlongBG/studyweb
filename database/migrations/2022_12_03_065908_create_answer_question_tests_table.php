@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('correct_choose_question_tests', function (Blueprint $table) {
+        Schema::create('answer_question_tests', function (Blueprint $table) {
             $table->integer('id', true);
             $table->integer('question_id');
-            $table->integer('result_question_test');
+            $table->text('content');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('correct_choose_question_tests');
+        Schema::dropIfExists('answer_question_tests');
     }
 };

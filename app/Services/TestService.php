@@ -2,34 +2,81 @@
 namespace App\Services;
 
 use App\Models\AnswerQuestionTest;
-use App\Models\ChooseQuestionTest;
-use App\Repositories\ChooseQuestionTest\ChooseQuestionTestRepository;
-use App\Repositories\Question\QuestionTestRepository;
+use App\Repositories\Answer\AnswerQuesionTestRepository;
+
+
+use App\Repositories\Question\QuestionRepository;
+
 use App\Repositories\Test\TestRepository;
 use Illuminate\Http\Request;
-use Symfony\Component\Console\Question\Question;
 
 class TestService extends BaseService{
 private TestRepository $testRepository;
-private QuestionTestRepository $questionTestRepository;
+private QuestionRepository $questionRepository;
 
-private AnswerQuestionTest $answerQuestionTestRepository;
-private ChooseQuestionTestRepository  $chooseQuestionTestRepository;
-public function __construct(TestRepository $testRepository, QuestionTestRepository $questionTestRepository,  ChooseQuestionTestRepository $chooseQuestionTestRepository  )
+private AnswerQuesionTestRepository $answerQuestionTestRepository;
+public function __construct(TestRepository $testRepository, QuestionRepository $questionRepository, AnswerQuesionTestRepository $answerQuestionTestRepository )
 {
     $this->testRepository=$testRepository;
-    $this->questionTestRepository=$questionTestRepository;
-    $this->chooseQuestionTestRepository=$chooseQuestionTestRepository;
+    $this->questionRepository=$questionRepository;
+    $this->answerQuestionTestRepository=$answerQuestionTestRepository;
 }
 public function list($request){
-    
-        $filter=array();
-        if(  $request->userId!=null){
-            $filter['userId']=$request->userId;
-           
+        $filters=[];
+        
+        if(  $request->role!=null){
+              array_push($filters,['user_tests.role','=',$request->role]);
+        };
+        if(  $request->user_id!=null){
+            array_push($filters,['user_tests.user_id','=',$request->user_id]);
+        }
+         if(  $request->type!=null){
+             array_push($filters,['tests.type','=',$request->type]);
+        }
+         if(  $request->name!=null){
+             array_push($filters,['tests.name','like','%'.$request->name.'%']);
+        }
+        if(  $request->status!=null){
+              array_push($filters,['user_tests.status','=',$request->status]);
+        }
+        
+        if(  $request->candidates!=null){
+             array_push($filters,['tests.candidates','<=',$request->candidates]);
         }
         // dd($filter);
-        return $this->testRepository->findWhere($filter, ['*'],"");
+        
+        return $this->testRepository->listByFilter($filters);
+}
+public function listQuestion($idTest, $status){
+        // dd($status);
+        if ($status == 0) {
+            $listquestions = $this->questionRepository->findWhere(['dependence_id' => $idTest], ['*'], "");
+            $dataQuestions = [];
+            foreach ($listquestions as $question) {
+                $choices = $this->chooseQuestionTestRepository->findWhere(['question_id' => $question['id']], ['*'], "");
+                $dataQuestion = [
+                    'question' => $question,
+                    'choices' => $choices
+                ];
+                $dataQuestions[] = $dataQuestion;
+            }
+            ;
+            return $dataQuestions;
+        }else{
+ $listquestions = $this->questionRepository->listDetailQuestion($idTest);
+            // dd($listquestions);
+            $dataQuestions = [];
+            foreach ($listquestions as $question) {
+                $choices = $this->chooseQuestionTestRepository->findWhere(['question_id' => $question['id']], ['*'], "");
+                $dataQuestion = [
+                    'question' => $question,
+                    'choices' => $choices
+                ];
+                $dataQuestions[] = $dataQuestion;
+            }
+            ;
+            return $dataQuestions;
+        }
 }
 public function create(Request $request){
 $data=[

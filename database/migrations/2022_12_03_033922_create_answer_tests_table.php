@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dependences', function (Blueprint $table) {
+        Schema::create('answer_tests', function (Blueprint $table) {
             $table->integer('id', true);
+            $table->string('answer')->comment('choice question it is ID Choose, Essay question it is value');
             $table->integer('question_id');
-            $table->integer('test_id');
-            $table->integer('subject_id');
-            $table->integer('item_subject_id');
-            $table->integer('point');
+            $table->integer('exam_id');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dependences');
+        Schema::dropIfExists('answer_tests');
     }
 };
