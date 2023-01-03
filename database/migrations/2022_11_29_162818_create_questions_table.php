@@ -17,11 +17,11 @@ return new class extends Migration
             $table->integer('id', true);
             $table->text('content');
             $table->integer('user_id');
-            $table->text('latex');
+            $table->text('latex')->nullable();
             $table->integer('subject_id')->nullable();
-            $table->tinyInteger('type')->comment('0: Câu hỏi bình thường, 1: Tự luận, 2: Trắc nghiệm');
+            $table->tinyInteger('type')->comment('0: Câu hỏi bình thường, 1: Điền đáp án, 2: Trắc nghiệm, 3: Tự luận');
             // if question test dependence =1 else =0
-            $table->tinyInteger('scope')->comment('0: Public ra Forum, 1: Private');
+            $table->tinyInteger('scope')->comment('0: Public ra Forum, 1: Private')->default(0);
             $table->timestamps();
         });
     }

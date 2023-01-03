@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
            $table->integer('id', true);
-            $table->float('point');
+            $table->float('point')->default(0);
             $table->integer('user_id');
             $table->integer('test_id');
             $table->timestamps();

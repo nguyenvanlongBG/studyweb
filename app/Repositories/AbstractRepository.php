@@ -69,7 +69,10 @@ public function delete($id){
     }
     return false;
 }
-
+  public function deleteMore($ids)
+    {
+        return $this->model->destroy($ids);
+    }
 
 }
 ?>

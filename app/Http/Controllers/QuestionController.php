@@ -20,8 +20,12 @@ class QuestionController extends Controller
         // dd($this->questionNormalService->list());
         return $this->questionService->list();
     }
+     public function handle(Request $request)
+    {
+        return $this->questionService->handle($request);
+    }
 public function listQuestionNormals(){
-        return $this->questionService->questionNormals();
+        return $this->questionService->questionsNormal();
 }
 public function listQuestionTest(){
         return $this->questionService->questionNormals();

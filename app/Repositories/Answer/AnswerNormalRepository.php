@@ -1,14 +1,14 @@
 <?php
 namespace App\Repositories\Answer;
-use App\Models\AnswerQuestionTest;
+use App\Models\AnswerNormal;
 use App\Repositories\AbstractRepository;
-class AnswerQuestionTestRepository extends AbstractRepository{
+class AnswerNormalRepository extends AbstractRepository{
 
 	/**
 	 * @return mixed
 	 */
 	public function model() {
-        return AnswerQuestionTest::class;
+        return AnswerNormal::class;
 	}
     
 }

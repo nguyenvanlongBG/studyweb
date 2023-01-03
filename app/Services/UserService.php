@@ -18,6 +18,9 @@ class UserService extends BaseService
       
         return null;
       }
+      public function create($data){
+        return $this->userRepository->create($data);
+      }
     public function createRequest(Request $request){
        
         $data=[

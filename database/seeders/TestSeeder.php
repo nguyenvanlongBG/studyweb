@@ -16,8 +16,8 @@ class TestSeeder extends Seeder
     public function run()
     {
          $tests = [
-        	 ['Cuối kì 1','0',null, '0', '4', '0','200','Bài thi nâng cao','11:02:11', '12:02:11'],
-              ['Cuối kì 2','0',null, '0', '4', '0','200','Bài thi Olympic','11:02:11', '12:02:11'],
+        	 ['Cuối kì 1','0',null, '0','true','true', '4', '0','2','200','Bài thi nâng cao','11:02:11', '12:02:11'],
+              ['Cuối kì 2','0',null, '0','false','true', '4', '0','2','200','Bài thi Olympic','11:02:11', '12:02:11'],
         ];
  
         foreach ($tests as $test) {
@@ -26,12 +26,15 @@ class TestSeeder extends Seeder
                 'type' => $test[1],
                 'belong_id'=>$test[2],
                 'scope' => $test[3],
-                'fee' => $test[4],
-                'candidates'=>$test[5],
-                'reward_init'=>$test[6],
-                'note'=>$test[7],
-                'time_start'=>$test[8],
-                'time_finish'=>$test[9]
+                'allowRework'=>$test[4],
+                'markOption'=>$test[5],
+                'fee' => $test[6],
+                'candidates'=>$test[7],
+                'total_page'=>$test[8],
+                'reward_init'=>$test[9],
+                'note'=>$test[10],
+                'time_start'=>$test[11],
+                'time_finish'=>$test[12]
             ]);
         }
     }

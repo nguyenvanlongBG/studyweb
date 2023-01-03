@@ -22,8 +22,13 @@ return new class extends Migration
            // Bài kiểm tra trong lớp hay thuộc về mission
             $table->boolean('scope');
             //scope=0 public, scope=1 private in system
+            $table->boolean('allowRework')->default(true);
+            // Cho phép làm nhiều lần
+            $table->boolean('markOption')->default(true);
+            // true: Chấm ngay sau khi nộp bài, false: Chấm khi hết thời gian làm bài
              $table->integer('fee');
-             $table->integer('candidates');
+             $table->integer('candidates')->default(0);
+             $table->integer('total_page');
              $table->integer('reward_init');
             $table->string('note');
             $table->timestamp('time_start')->useCurrent();

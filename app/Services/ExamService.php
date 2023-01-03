@@ -66,5 +66,8 @@ public function create($dataExam){
     }
     return false;
     }
+    public function update(){
+        
+    }
 }
 ?>

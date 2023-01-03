@@ -1,24 +1,24 @@
 <?php
 namespace App\Services;
-
+use App\Repositories\Answer\AnswerNormalRepository;
 use App\Repositories\CorrectAnswer\CorrectAnswerRepository;
 use App\Repositories\Answer\AnswerRepository;
 use Illuminate\Http\Request;
 
 class AnswerService extends BaseService{
-private AnswerRepository $answerRepository;
-public function __construct(AnswerRepository $answerRepository)
+private AnswerNormalRepository $answerNormalRepository;
+public function __construct(AnswerNormalRepository $answerNormalRepository)
 {
-    $this->answerRepository=$answerRepository;
+    $this->answerNormalRepository=$answerNormalRepository;
 }
 public function listByIdQuestion($id){
     // dd("OK");
-return $this->answerRepository->listByIdQuestion($id);
+return $this->answerNormalRepository->listByIdQuestion($id);
 }
 public function list(){
 
 }
-public function create(Request $request){
+public function createNormalAnswer(Request $request){
     
 $data=[
     'question_normal_id'=>$request['question_normal_id'],
@@ -29,6 +29,9 @@ if($this->answerNormalRepository->create($data)){
     return true;
 }
 return false;
+}
+public function showNormalAnswer($id){
+        return $this->sendResponse($this->answerNormalRepository->find($id),"Sucessfully" );
 }
 }
 ?>

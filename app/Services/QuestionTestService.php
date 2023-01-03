@@ -14,18 +14,18 @@ public function __construct(QuestionTestRepository $questionTestRepository, Choo
 }
 public function listByIdTest($idTest){
     // dd($idTest);
-    $listquestions=$this->questionTestRepository->findWhere(['test_id'=>$idTest], ['*'], "");
-    $dataQuestions=[];
-    foreach($listquestions as $question){
-        $choices=$this->chooseQuestionTestRepository->findWhere(['question_test_id'=>$question['id']], ['*'],"" );
-        $dataQuestion=[
-            'question'=>$question,
-            'choices'=>$choices
-        ];
-        $dataQuestions[]=$dataQuestion;
-    };
+    $listquestions=$this->questionTestRepository->findWhere(['test_id'=>$idTest], ['*'], "")->get();
+    // $dataQuestions=[];
+    // foreach($listquestions as $question){
+    //     $choices=$this->chooseQuestionTestRepository->findWhere(['question_test_id'=>$question['id']], ['*'],"" );
+    //     $dataQuestion=[
+    //         'question'=>$question,
+    //         'choices'=>$choices
+    //     ];
+    //     $dataQuestions[]=$dataQuestion;
+    // };
     
-   return $dataQuestions;
+   return $listquestions;
 }
 public function create($request){
     $data=[

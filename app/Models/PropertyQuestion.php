@@ -10,10 +10,13 @@ class PropertyQuestion extends Model
     use HasFactory;
     protected $fillable = [
         'question_id',
+        'point',
+        'page',
+        'index',
         'dependence_id',
         //  ID Test or ID Big Question
         'result_id'
-        //  Id Answer Test
+        //  Id Result is ID Answer Test
     ];
     public function questions(){
         $this->belongsTo(Question::class);

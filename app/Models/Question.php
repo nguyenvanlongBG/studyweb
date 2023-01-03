@@ -14,7 +14,7 @@ class Question extends Model
         'latex',
         'subject_id',
         'type',
-        // 0: Bình thường, 1: Tự luận, 2: Trắc nghiệm
+        // 0: Bình thường, 1: Điền đáp án, 2: Trắc nghiệm, 3 Tự luận
         'scope'
         // 0 Puclic Forum, 1: Private
     ];

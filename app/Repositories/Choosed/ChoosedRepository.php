@@ -1,6 +1,5 @@
 <?php  
 namespace App\Repositories\Choosed;
-
 use App\Models\Choosed;
 use App\Repositories\AbstractRepository;
 use Illuminate\Http\Request;

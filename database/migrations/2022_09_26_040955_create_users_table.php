@@ -20,9 +20,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('role_id');
-            $table->integer('level');
-            $table->integer('point');
-             $table->integer('asset');
+            $table->integer('level')->default(0);
+            $table->integer('point')->default(0);
+            $table->integer('asset');
             $table->rememberToken();
             $table->timestamps();
         });

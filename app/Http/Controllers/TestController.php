@@ -19,13 +19,15 @@ class TestController extends Controller
      */
     public function index(Request $request)
     {
+       
         return $this->testService->list($request);
     }
 public function list(Request $request)
     {
         
         // if($request->params)
-        dd($request);
+        //  dd("OK List");
+        // dd($request);
         return $this->testService->list($request);
         
     }
@@ -62,12 +64,12 @@ public function list(Request $request)
         // dd($request->input('idTest'));
       return $this->testService->show($id);
     }
-    public function listQuestionTest($id, Request $request)
+    public function listQuestionTestDo($id, Request $request)
     {
         // dd($request->input('idTest'));
         // dd($id);
         // dd($request);
-            return $this->testService->listQuestion($id, $request->status);
+            return $this->testService->listQuestionDo($id, $request);
        
       
     }
@@ -77,11 +79,26 @@ public function list(Request $request)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function nummericalQuestion($id,Request $request){
+        if($request->type==1){
+              return $this->testService->nummericalQuestionDo($id, $request);
+        }else{
+            if($request->type==2){
+                return $this->testService->nummericalQuestionUpdate($id, $request);
+            }else{
+                return $this->testService->nummericalQuestionHistory($id, $request);
+            }
+        }
+       
+    }
+
     public function edit($id)
     {
         //
     }
-
+public function updateTest($id,Request $request){
+       return $this->testService->update($id, $request);
+}   
     /**
      * Update the specified resource in storage.
      *
@@ -89,9 +106,9 @@ public function list(Request $request)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function listQuestionTestUpdate( $id, Request $request)
     {
-        //
+        return $this->testService->listQuestionUpdate($id,  $request->current_page);
     }
 
     /**

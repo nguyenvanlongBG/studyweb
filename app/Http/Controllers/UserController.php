@@ -12,7 +12,6 @@ class UserController extends Controller
       $this->userService=$userService;
     } 
     public function createRequest(Request $request){
-      
         $this->userService->createRequest($request);
     }
 }

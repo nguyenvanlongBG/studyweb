@@ -13,7 +13,9 @@ class UserTest extends Model
         'user_id',
         'test_id',
         'role',
+        // Role xem, chỉnh sửa
         'status'
+        // Đang làm hoặc hoàn thành
     ];
     public function users(){
         $this->hasOne(User::class);
