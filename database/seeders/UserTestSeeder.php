@@ -16,8 +16,8 @@ class UserTestSeeder extends Seeder
     public function run()
     {
          $user_tests = [
-        	 ['1', '1', '2',null],
-            ['1', '1', '2',null],
+        	 ['1', '1', '2'],
+            ['1', '1', '2'],
         ];
  
         foreach ($user_tests as $user_test) {

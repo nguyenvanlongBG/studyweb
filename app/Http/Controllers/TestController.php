@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TestRequest;
+use App\Models\UserTest;
 use App\Services\TestService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
     private TestService $testService;
+    
     public function __construct(TestService $testService)
     {
         $this->testService=$testService;
@@ -36,10 +41,28 @@ public function list(Request $request)
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(TestRequest $request)
     {
+        $user = Auth::user();
         // dd($request);
-        $this->testService->create($request);
+        // dd($request['time_start']);
+        //   $formatDate = Carbon::createFromFormat('Y-m-d H:i:s', $request['time_start'])->format('Y-m-d H:i:s');
+        // dd(Carbon::now()->toISOString());
+        // Admin or exam editor
+        if($user->role_id==1||$user->role_id==3){
+           
+           return $this->testService->create($user,$request);
+        }else{
+            // Teacher
+            if($user->role_id==4){
+                
+              return $this->testService->create($user, $request);
+            
+            }else{
+                return "Not";
+            }
+        }
+        
     }
 
     /**
@@ -64,15 +87,6 @@ public function list(Request $request)
         // dd($request->input('idTest'));
       return $this->testService->show($id);
     }
-    public function listQuestionTestDo($id, Request $request)
-    {
-        // dd($request->input('idTest'));
-        // dd($id);
-        // dd($request);
-            return $this->testService->listQuestionDo($id, $request);
-       
-      
-    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -96,6 +110,10 @@ public function list(Request $request)
     {
         //
     }
+     public function update(Request $request)
+    {
+        return $this->testService->update($request);
+    }
 public function updateTest($id,Request $request){
        return $this->testService->update($id, $request);
 }   
@@ -106,6 +124,13 @@ public function updateTest($id,Request $request){
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+       public function listQuestionTestDo($id, Request $request)
+    {
+        // dd($request->input('idTest'));
+        // dd($id);
+        // dd($request);
+            return $this->testService->listQuestionDo($id, $request->current_page);
+    }
     public function listQuestionTestUpdate( $id, Request $request)
     {
         return $this->testService->listQuestionUpdate($id,  $request->current_page);

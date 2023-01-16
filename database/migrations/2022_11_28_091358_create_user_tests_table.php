@@ -14,13 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_tests', function (Blueprint $table) {
-            $table->integer('id', true);
+            // $table->integer('id', true);
             $table->integer('user_id');
             $table->integer('test_id');
             $table->tinyInteger('role');
-            // role=0 không có quyền, 1 xem, 2 chỉnh sửa
-            $table->tinyInteger('status')->nullable();
+            // role=0 không có quyền, 1 xem, 2 xem và chỉnh sửa
+            $table->tinyInteger('status')->default(0);
             // status=0 chưa làm, status =1 đang làm status=2 làm xong
+            $table->primary(array('user_id', 'test_id'));
             $table->timestamps();
         });
     }

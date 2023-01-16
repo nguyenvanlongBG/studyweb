@@ -11,10 +11,6 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
-use App\Models\AnswerNormal;
-use App\Models\ChooseQuestionTest;
-use App\Models\CorrectAnswer;
-use App\Models\RequestClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,9 +31,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+});
+Route::prefix('auth')->middleware('auth:sanctum')->group(function () {
+     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::post('/me', [AuthController::class, 'me']);
+    Route::get('/me', [AuthController::class, 'me']);
 });
 Route::prefix('post')->group(function(){
     Route::post('/create', [PostController::class, 'create']);
@@ -54,30 +52,26 @@ Route::prefix('group')->group(function(){
     Route::post('/createRequest', [UserController::class, 'createRequest']);
     Route::post('/approveUser/{id}', [GroupController::class, 'approveUser']);
 });
-Route::prefix('test')->group(function(){
+Route::prefix('test')->middleware('auth:sanctum')->group(function(){
     Route::post('/create', [TestController::class, 'create']);
+    Route::put('/update', [TestController::class, 'update']);
     Route::get('/show', [TestController::class, 'show']);
     Route::get('/list', [TestController::class, 'list']);
     Route::get('/{id}/do', [TestController::class, 'listQuestionTestDo']);// Not send result
+    Route::get('/{idTest}/exam', [ExamController::class, 'history']);
     Route::get('/{id}/mark', [TestController::class, 'markTest']);
-    Route::get('/{id}/history', [TestController::class, 'historyExam']);// Send result test
     Route::get('/{id}/update', [TestController::class, 'listQuestionTestUpdate']);// Not send result
     Route::put('/{id}/updateTest', [TestController::class, 'updateTest']);// 
     Route::put('/{id}/updateInfoTest', [TestController::class, 'updateInfoTest']);
     Route::get('/{id}/nummericalQuestion', [TestController::class, 'nummericalQuestion']);
     Route::get('/questions', [QuestionTestController::class, 'listByIdTest']);
-    Route::post('/createResult', [CorrectAnswerController::class, 'create']);
-    Route::post('/createChoose', [ChooseQuestionTest::class, 'create']);
-    Route::post('/updateChoose', [ChooseQuestionTest::class, 'update']);
-    Route::post('/deleteChoose', [ChooseQuestionTest::class, 'create']);
-    Route::post('/chooses', [ChooseQuestionTest::class, 'listBy']);
-   
-    Route::post('/showQuestion', [QuestionTestController::class, 'show']);
-    Route::post('/createQuestion', [QuestionTestController::class, 'create']);
-    Route::post('/updateQuestion', [QuestionTestController::class, 'update']);
-    Route::post('/deleteQuestion', [QuestionTestController::class, 'delete']);
 });
-
+Route::prefix('exam')->middleware('auth:sanctum')->group(function () {
+    Route::get('/list', [ExamController::class, 'list']);
+    Route::put('/update', [ExamController::class, 'update']);
+    Route::post('/createNew', [ExamController::class, 'createNew']);
+    Route::post('/rework', [ExamController::class, 'rework']);
+});
 Route::get('/listUser/{id}', [ClassroomController::class, 'listUser']);
 
 Route::prefix('questionNormal')->group(function(){

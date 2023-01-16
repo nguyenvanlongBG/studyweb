@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Services\ExamService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
 {
-    private ExamService $examService;
+    private ExamService $examService; 
     public function __construct(ExamService $examService)
     {
         $this->examService=$examService;
@@ -21,6 +22,9 @@ class ExamController extends Controller
     {
         //
     }
+    public function list(Request $request){
+       return $this->examService->list($request->all());
+    }
     public function doTest(Request $request){
        
        $this->examService->doTest($request);
@@ -30,11 +34,15 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createNew(Request $request)
     {
-        
+       return $this->examService->createNew($request->all());
     }
-
+    public function update(Request $request)
+    {
+       
+       return $this->examService->update($request);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -45,16 +53,15 @@ class ExamController extends Controller
     {
         //
     }
-
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function history($idTest, Request $request)
     {
-        //
+        return $this->examService->history($idTest, $request);
     }
 
     /**
@@ -75,10 +82,7 @@ class ExamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+ 
 
     /**
      * Remove the specified resource from storage.

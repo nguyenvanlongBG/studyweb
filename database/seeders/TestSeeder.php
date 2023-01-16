@@ -16,8 +16,8 @@ class TestSeeder extends Seeder
     public function run()
     {
          $tests = [
-        	 ['Cuối kì 1','0',null, '0','true','true', '4', '0','2','200','Bài thi nâng cao','11:02:11', '12:02:11'],
-              ['Cuối kì 2','0',null, '0','false','true', '4', '0','2','200','Bài thi Olympic','11:02:11', '12:02:11'],
+        	 ['Cuối kì 1','0',null, '0',1,0, '4', '0','2','200','Bài thi nâng cao','11:02:11', '12:02:11'],
+              ['Cuối kì 2','0',null, '0',1,0, '4', '0','2','200','Bài thi Olympic','11:02:11', '12:02:11'],
         ];
  
         foreach ($tests as $test) {

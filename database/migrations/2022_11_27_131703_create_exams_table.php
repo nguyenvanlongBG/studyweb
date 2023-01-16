@@ -18,6 +18,12 @@ return new class extends Migration
             $table->float('point')->default(0);
             $table->integer('user_id');
             $table->integer('test_id');
+            // 0 Thi thử và 1 thi thật
+            $table->boolean('type')->default(true);
+            $table->boolean('is_complete')->default(false);
+            // is_complete=false đang làm, is_complete =true đã hoàn thành
+            $table->boolean('is_marked')->default(false);
+            // is_marked=false chưa chấm xong, is_marked =true đã chấm xong
             $table->timestamps();
         });
     }

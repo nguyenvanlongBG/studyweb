@@ -26,17 +26,24 @@ class AuthController extends Controller
          $credentials = $request->only('email', 'password');
          if (Auth::attempt($credentials)) {
             $user = User::whereEmail($credentials['email'])->first();
-            $user->token = $user->createToken('App')->plainTextToken;
-            return response()->json($user);
+            if (!Hash::check($credentials['password'], $user->password, [])) {
+                throw new \Exception('Error in Login');
+            }
+            $tokenResult = $user->createToken('App')->plainTextToken;
+            return $this->baseService->sendResponse($tokenResult, "Login Successfully");
         } else {
-            return response()->json(['email' => 'Sai ten dang nhap hoac mat khau'], 401);
+            return $this->baseService->sendError("Fail", "Login Fail", 401);
         }
     }
        public function register(RegisterRequest $request){
         
         $credentials = $request->all();
-        $user=$this->userService->create(['name'=>$credentials['name'],'email'=>$credentials['email'],'password'=>Hash::make($credentials['password']), 'role_id' => 1, 'point' => 0, 'asset' => 2500]);
-        return $user;
+        $user=$this->userService->create(['name'=>$credentials['name'],'email'=>$credentials['email'],'password'=>Hash::make($credentials['password']), 'role_id' => $credentials['role'], 'point' => 0, 'asset' => 2500]);
+        return $this->baseService->sendResponse($user, "Create user successfully");
+    }
+    public function me(){
+        $user = Auth::user();
+        return $this->baseService->sendResponse(['user' => $user], "Sucessfully");
     }
     public function respondWithToken($token){
         $user=Auth::user();

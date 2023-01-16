@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('answer_tests', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('answer')->comment('choice question it is ID Choose, Fill question it is value, Essay question it is value');
+            $table->text('answer')->comment('choice question it is ID Choose, Fill question it is value, Essay question it is value')->nullable();
             $table->integer('question_id');
             $table->integer('exam_id');
+            $table->unique(array('question_id', 'exam_id'));
             $table->timestamps();
         });
     }

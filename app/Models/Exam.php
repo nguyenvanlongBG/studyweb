@@ -11,7 +11,10 @@ class Exam extends Model
     protected $fillable=[
         'point',
         'user_id',
-        'test_id'
+        'test_id',
+        'type',
+        'is_complete', // 0 Đang làm, 1 đã hoàn thành
+        'is_marked' // 0 Chưa chấm xong, 1 đã chấm xong
     ];
     public function users(){
         return $this->belongsTo(User::class);
