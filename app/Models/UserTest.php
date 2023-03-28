@@ -13,7 +13,7 @@ class UserTest extends Model
         'user_id',
         'test_id',
         'role',
-        // Role xem=0, chỉnh sửa=1      
+        // Role xem=0, Admin=1, chỉnh sửa=2     
     ];
     public function users(){
         $this->hasOne(User::class);

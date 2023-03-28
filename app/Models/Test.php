@@ -11,6 +11,7 @@ class Test extends Model
     protected $fillable=[
         'name',
         'type',
+        'subject_id',
         'belong_id',
         'scope',
         'allowRework',

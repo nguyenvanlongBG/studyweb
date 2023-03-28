@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('answer')->comment('choice question it is ID Choose, Fill question it is value, Essay question it is value')->nullable();
             $table->integer('question_id');
             $table->integer('exam_id');
+            $table->float('point')->nullable()->default(null);
             $table->unique(array('question_id', 'exam_id'));
             $table->timestamps();
         });

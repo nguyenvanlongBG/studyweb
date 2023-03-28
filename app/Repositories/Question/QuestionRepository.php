@@ -31,7 +31,7 @@ public function findByIdTest($id, $page, $type){
     if($type==0){
       $data['questions']=$questions->makeHidden(['result_id', 'contentResult']);
     }else{
-         $data['questions']=$questions;
+      $data['questions']=$questions;
     }
    
     return $data;
@@ -44,7 +44,6 @@ public function findByIdTest($id, $page, $type){
     }else{
            return $this->model->join('property_questions', 'property_questions.question_id', '=', 'questions.id')->where('dependence_id','=', $id)->where('page','=', $page)->orderBy('index')->get();
     }
-      
 }
   
 }

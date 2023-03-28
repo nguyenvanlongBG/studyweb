@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TestRequest;
 use App\Models\UserTest;
+use App\Services\BaseService;
+use App\Services\ExamService;
 use App\Services\TestService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,10 +14,14 @@ use Illuminate\Support\Facades\Auth;
 class TestController extends Controller
 {
     private TestService $testService;
+    private ExamService $examService;
+    private BaseService $baseService;
     
-    public function __construct(TestService $testService)
+    public function __construct(TestService $testService, ExamService $examService, BaseService $baseService)
     {
         $this->testService=$testService;
+        $this->examService=$examService;
+        $this->baseService=$baseService;
     }
     /**
      * Display a listing of the resource.
@@ -29,7 +35,6 @@ class TestController extends Controller
     }
 public function list(Request $request)
     {
-        
         // if($request->params)
         //  dd("OK List");
         // dd($request);
@@ -59,12 +64,14 @@ public function list(Request $request)
               return $this->testService->create($user, $request);
             
             }else{
-                return "Not";
+                return $this->baseService->sendError(null, "Error");
             }
         }
         
     }
-
+    public function import(Request $request){
+          return $this->testService->import($request);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -75,17 +82,18 @@ public function list(Request $request)
     {
         //
     }
-
+public function getExams($id, Request $request){
+       return $this->examService->list($id, $request);
+}
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function detail($id)
     {
-        // dd($request->input('idTest'));
-      return $this->testService->show($id);
+        return $this->testService->detail($id);
     }
     /**
      * Show the form for editing the specified resource.
@@ -96,14 +104,18 @@ public function list(Request $request)
     public function nummericalQuestion($id,Request $request){
         if($request->type==1){
               return $this->testService->nummericalQuestionDo($id, $request);
-        }else{
-            if($request->type==2){
-                return $this->testService->nummericalQuestionUpdate($id, $request);
-            }else{
-                return $this->testService->nummericalQuestionHistory($id, $request);
-            }
         }
-       
+        if($request->type==2){
+                return $this->testService->nummericalQuestionUpdate($id, $request);
+        }
+        if($request->type==3){
+                 return $this->examService->nummericalQuestionHistory($id, $request);
+        }   
+        if($request->type==4){
+           
+                 return $this->testService->nummericalQuestionMark($id, $request);
+        }
+        return $this->baseService->sendError(null, "Error");
     }
 
     public function edit($id)
@@ -126,10 +138,7 @@ public function updateTest($id,Request $request){
      */
        public function listQuestionTestDo($id, Request $request)
     {
-        // dd($request->input('idTest'));
-        // dd($id);
-        // dd($request);
-            return $this->testService->listQuestionDo($id, $request->current_page);
+            return $this->examService->listQuestionDo($id, $request->current_page);
     }
     public function listQuestionTestUpdate( $id, Request $request)
     {
@@ -145,5 +154,8 @@ public function updateTest($id,Request $request){
     public function destroy($id)
     {
         //
+    }
+    public function report($id, Request $request){
+        return $this->testService->reportTest($id,$request);
     }
 }

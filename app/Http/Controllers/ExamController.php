@@ -38,10 +38,13 @@ class ExamController extends Controller
     {
        return $this->examService->createNew($request->all());
     }
-    public function update(Request $request)
+    public function do(Request $request)
     {
-       
-       return $this->examService->update($request);
+       return $this->examService->doExam($request);
+    }
+     public function mark( $idExam,Request $request)
+    {
+       return $this->examService->mark($idExam,$request);
     }
     /**
      * Store a newly created resource in storage.
@@ -52,6 +55,12 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         //
+    }
+    public function submit(Request $request){
+        return  $this->examService->submit($request);
+    }
+    public function reportExam($id, Request $request){
+        return $this->examService->reportExam($id,$request);
     }
     /**
      * Display the specified resource.

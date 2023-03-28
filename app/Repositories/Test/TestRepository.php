@@ -22,6 +22,7 @@ class TestRepository extends AbstractRepository{
        public function listByFilter($filters)
     {
         // dd($filters);
+        $data = [];
         if($filters!=null){
        $data=$this->model->join('user_tests', 'user_tests.test_id', '=','tests.id')->where($filters)->get()->unique('test_id');
     }else{

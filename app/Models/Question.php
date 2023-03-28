@@ -15,6 +15,7 @@ class Question extends Model
         'subject_id',
         'type',
         // 0: Bình thường, 1: Điền đáp án, 2: Trắc nghiệm, 3 Tự luận
+        'note',
         'scope'
         // 0 Puclic Forum, 1: Private
     ];

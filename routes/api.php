@@ -9,6 +9,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuestionTestController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -52,12 +53,19 @@ Route::prefix('group')->group(function(){
     Route::post('/createRequest', [UserController::class, 'createRequest']);
     Route::post('/approveUser/{id}', [GroupController::class, 'approveUser']);
 });
-Route::prefix('test')->middleware('auth:sanctum')->group(function(){
-    Route::post('/create', [TestController::class, 'create']);
-    Route::put('/update', [TestController::class, 'update']);
-    Route::get('/show', [TestController::class, 'show']);
-    Route::get('/list', [TestController::class, 'list']);
+Route::get('/subject/{id}/items', [SubjectController::class, 'items']);
+Route::prefix('subject')->middleware('auth:sanctum')->group(function () {
+     Route::post('/{id}/items', [TestController::class, 'create']);
+     Route::post('/{id}/createItem', [TestController::class, 'create']);
+     Route::post('/{id}/updateItem', [TestController::class, 'create']);
+     Route::post('/{id}/deleteItem', [TestController::class, 'create']);
+});
+Route::get('/test/list', [TestController::class, 'list']);
+Route::get('/test/{id}/detail', [TestController::class, 'detail']);
+Route::prefix('test')->middleware('auth:sanctum')->group(function(){ 
+    Route::get('/{id}/exams', [TestController::class, 'getExams']);
     Route::get('/{id}/do', [TestController::class, 'listQuestionTestDo']);// Not send result
+    Route::put('/{id}/submit', [ExamController::class, 'submit']);
     Route::get('/{idTest}/exam', [ExamController::class, 'history']);
     Route::get('/{id}/mark', [TestController::class, 'markTest']);
     Route::get('/{id}/update', [TestController::class, 'listQuestionTestUpdate']);// Not send result
@@ -65,12 +73,21 @@ Route::prefix('test')->middleware('auth:sanctum')->group(function(){
     Route::put('/{id}/updateInfoTest', [TestController::class, 'updateInfoTest']);
     Route::get('/{id}/nummericalQuestion', [TestController::class, 'nummericalQuestion']);
     Route::get('/questions', [QuestionTestController::class, 'listByIdTest']);
+    Route::get('/{id}/report', [TestController::class, 'report']);
+});
+Route::prefix('review')->group(function(){
+    Route::post('/create', [TestController::class, 'import']);
+    Route::get('/{id}/do', [AnswerController::class, 'updateNormalAnswer']);
+    Route::get('/{id}/delete', [AnswerController::class, 'deleteNormalAnswer']);
+    Route::get('/{id}/show', [AnswerController::class, 'showNormalAnswer']);
 });
 Route::prefix('exam')->middleware('auth:sanctum')->group(function () {
     Route::get('/list', [ExamController::class, 'list']);
-    Route::put('/update', [ExamController::class, 'update']);
+    Route::put('/do', [ExamController::class, 'do']);
+    Route::put('/{idExam}/mark', [ExamController::class, 'mark']);
     Route::post('/createNew', [ExamController::class, 'createNew']);
     Route::post('/rework', [ExamController::class, 'rework']);
+    Route::get('/{id}/report', [ExamController::class, 'reportExam']);
 });
 Route::get('/listUser/{id}', [ClassroomController::class, 'listUser']);
 

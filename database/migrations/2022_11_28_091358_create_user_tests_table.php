@@ -19,8 +19,6 @@ return new class extends Migration
             $table->integer('test_id');
             $table->tinyInteger('role');
             // role=0 không có quyền, 1 xem, 2 xem và chỉnh sửa
-            $table->tinyInteger('status')->default(0);
-            // status=0 chưa làm, status =1 đang làm status=2 làm xong
             $table->primary(array('user_id', 'test_id'));
             $table->timestamps();
         });

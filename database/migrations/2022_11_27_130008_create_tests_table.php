@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->tinyInteger('type');
              // type=0 exam, type=1 mission, type=2 competition
+            $table->tinyInteger('subject_id');
+            // 1 All subject, 2 Math, 3 Chemistry, 4 Phisical
             $table->integer('belong_id')->nullable();
            // Bài kiểm tra trong lớp hay thuộc về mission
             $table->boolean('scope');

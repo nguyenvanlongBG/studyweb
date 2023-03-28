@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Repositories\Question\QuestionTestRepository;
 use App\Repositories\ChooseQuestionTest\ChooseQuestionTestRepository;
+use Illuminate\Support\Facades\DB;
 
 class QuestionTestService extends BaseService{
 
@@ -13,18 +14,7 @@ public function __construct(QuestionTestRepository $questionTestRepository, Choo
     $this->chooseQuestionTestRepository=$chooseQuestionTestRepository;
 }
 public function listByIdTest($idTest){
-    // dd($idTest);
     $listquestions=$this->questionTestRepository->findWhere(['test_id'=>$idTest], ['*'], "")->get();
-    // $dataQuestions=[];
-    // foreach($listquestions as $question){
-    //     $choices=$this->chooseQuestionTestRepository->findWhere(['question_test_id'=>$question['id']], ['*'],"" );
-    //     $dataQuestion=[
-    //         'question'=>$question,
-    //         'choices'=>$choices
-    //     ];
-    //     $dataQuestions[]=$dataQuestion;
-    // };
-    
    return $listquestions;
 }
 public function create($request){
@@ -33,7 +23,14 @@ public function create($request){
         'point'=>$request['point'],
         'test_id'=>$request['test_id']
     ];
-    $this->questionTestRepository->create($data);
+    DB::beginTransaction();
+    $question=$this->questionTestRepository->create($data);
+    if($question){
+          DB::commit();
+    }else{
+        DB::rollBack();
+    }
+    return $this->sendResponse(null, "Successfully");
 }
 public function update(){
     

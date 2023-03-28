@@ -10,10 +10,16 @@ class ExamRepository extends AbstractRepository{
     {
        return Exam::class;
     }
+    
   
-    public function list()
+    public function list($filtersExam, $filterUserName)
     {
-        return this->model()->all();
+        $query=$this->model->where($filtersExam);
+        $query->join('users', 'users.id', '=', 'exams.user_id')->select('exams.*', 'users.name as user_name');
+        if($filterUserName!=""){
+            $query->where('users.name', 'like', '%' . $filterUserName . '%');
+        }
+        return $query->get();
     }
   
   
