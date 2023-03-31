@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        // When question has special property
-        Schema::create('property_question_competitions', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->integer('property_question_id')->comment('id property of question competition');
-            $table->string('suggestion')->comment('only big or small question has it');
+        Schema::create('user_question_smalls', function (Blueprint $table) {
+             $table->integer('id', true);
+            $table->integer('question_id');
+            $table->integer('user_id');
+            $table->tinyInteger('role');
+            // role không được xem, được xem, được làm
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('property_question_competitions');
+        Schema::dropIfExists('user_question_smalls');
     }
 };

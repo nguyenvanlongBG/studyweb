@@ -16,12 +16,10 @@ return new class extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('name');
-            $table->tinyInteger('type');
+            $table->tinyInteger('type')->comment('Exam Mission Competition Exercise in group');
              // type=0 exam, type=1 mission, type=2 competition
             $table->tinyInteger('subject_id');
             // 1 All subject, 2 Math, 3 Chemistry, 4 Phisical
-            $table->integer('belong_id')->nullable();
-           // Bài kiểm tra trong lớp hay thuộc về mission
             $table->boolean('scope');
             //scope=0 public, scope=1 private in system
             $table->boolean('allow_rework')->default(true);
@@ -35,7 +33,6 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->timestamp('time_start')->useCurrent();
             $table->timestamp('time_finish')->nullable();
-            
             $table->timestamps();
         });
     }

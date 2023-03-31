@@ -63,6 +63,7 @@ Route::prefix('subject')->middleware('auth:sanctum')->group(function () {
 Route::get('/test/list', [TestController::class, 'list']);
 Route::get('/test/{id}/detail', [TestController::class, 'detail']);
 Route::prefix('test')->middleware('auth:sanctum')->group(function(){ 
+    Route::post('/create', [TestController::class,'create']);
     Route::get('/{id}/exams', [TestController::class, 'getExams']);
     Route::get('/{id}/do', [TestController::class, 'listQuestionTestDo']);// Not send result
     Route::put('/{id}/submit', [ExamController::class, 'submit']);
@@ -74,6 +75,7 @@ Route::prefix('test')->middleware('auth:sanctum')->group(function(){
     Route::get('/{id}/nummericalQuestion', [TestController::class, 'nummericalQuestion']);
     Route::get('/questions', [QuestionTestController::class, 'listByIdTest']);
     Route::get('/{id}/report', [TestController::class, 'report']);
+    Route::post('/{id}/import', [TestController::class, 'import']);
 });
 Route::prefix('review')->group(function(){
     Route::post('/create', [TestController::class, 'import']);

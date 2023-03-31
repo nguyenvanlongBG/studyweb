@@ -17,9 +17,9 @@ return new class extends Migration
             $table->integer('id', true);
             $table->text('content');
             $table->integer('user_id');
-            $table->text('latex')->nullable();
+            $table->text('mathML')->nullable();
             $table->integer('subject_id')->nullable();
-            $table->tinyInteger('type')->comment('0: Câu hỏi bình thường, 1: Điền đáp án, 2: Trắc nghiệm, 3: Tự luận');
+            $table->tinyInteger('type')->comment('0: Câu hỏi thảo luận 1: Điền đáp án, 2: Trắc nghiệm, 3: Tự luận, 4: Câu hỏi nhỏ, 5: Câu hỏi lớn ảnh, 6: Câu hỏi lớn chữ');
             // if question test dependence =1 else =0
             $table->text('note')->nullable();
             $table->tinyInteger('scope')->comment('0: Public ra Forum, 1: Private')->default(0);

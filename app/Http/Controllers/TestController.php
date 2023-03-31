@@ -69,8 +69,8 @@ public function list(Request $request)
         }
         
     }
-    public function import(Request $request){
-          return $this->testService->import($request);
+    public function import($id,Request $request){
+          return $this->testService->import($id, $request);
     }
     /**
      * Store a newly created resource in storage.

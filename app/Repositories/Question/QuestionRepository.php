@@ -23,13 +23,13 @@ class QuestionRepository extends AbstractRepository{
      * @return LengthAwarePaginator
      */
 public function findByIdTest($id, $page, $type){
-    $query=$this->model->leftJoin('property_questions', 'property_questions.question_id', '=', 'questions.id')->where('property_questions.dependence_id','=', $id)->leftJoin('answer_question_tests','property_questions.result_id', '=', 'answer_question_tests.id' )->select('questions.*', 'property_questions.question_id', 'property_questions.point', 'property_questions.page', 'property_questions.index', 'property_questions.dependence_id', 'property_questions.result_id','answer_question_tests.content As contentResult' );
+    $query=$this->model->leftJoin('question_dos', 'question_dos.question_id', '=', 'questions.id')->where('question_dos.type','=', 1)->select('questions.*', 'question_dos.question_id', 'question_dos.point', 'question_dos.index', 'question_dos.belong_id' );
     $data = [];
-    $questions=$query->where('page','=', $page)->orderBy('index')->get()->unique('question_id');
-    $startIndex =  $this->model->join('property_questions', 'property_questions.question_id', '=', 'questions.id')->where('dependence_id','=', $id)->where('page', '<', $page)->count()+1;
+    $questions=$query->orderBy('index')->get()->unique('question_id');
+    $startIndex =  $this->model->join('question_dos', 'question_dos.question_id', '=', 'questions.id')->where('question_dos.belong_id','=', $id)->count()+1;
     $data ['startIndex']=$startIndex;
     if($type==0){
-      $data['questions']=$questions->makeHidden(['result_id', 'contentResult']);
+      $data['questions']=$questions;
     }else{
       $data['questions']=$questions;
     }

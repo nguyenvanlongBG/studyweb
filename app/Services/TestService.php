@@ -6,6 +6,9 @@ use App\Models\Exam;
 use App\Models\ItemSubjectQuestion;
 use App\Models\PropertyQuestion;
 use App\Models\Question;
+use App\Models\QuestionBelong;
+use App\Models\QuestionDo;
+use App\Models\ResultQuestion;
 use App\Models\Test;
 use App\Models\UserTest;
 use App\Repositories\Answer\AnswerNormalRepository;
@@ -115,12 +118,8 @@ public function detail($id){
         return $this->sendResponse($test->makeHidden(['belong_id', 'scope', 'allow_rework', 'mark_option', 'note']), "Sucessfully");
             
     }
-    public function import($request){
+    public function import($id,$request){
         $document=$request->document;
-        // $text='';
-        // for($i=0;$i<mb_strlen($document);$i++){
-        //         $text.=mb_substr($document, $i+1, 1, 'UTF-8');
-        // };
         $listQuestion=[];
         $lines=explode('</p>',$document); 
         // dd($lines);
@@ -134,6 +133,8 @@ public function detail($id){
         $temp='';
         $choices=[];
         $begin=true;
+        $question=null;
+        $listAnswers=[];
         foreach($lines as $line){
             if($line==''){
                 continue;
@@ -218,6 +219,8 @@ public function detail($id){
                                             }else{
                                                 $contentQuestion.=$temp;
                                             }
+                                            $question=Question::create(['content'=>$contentQuestion, 'user_id'=>1,'mathML'=>$contentQuestion, 'subject_id'=>1,'type'=>2,'scope'=>1]);
+                                            QuestionBelong::create(['question_id'=>$question->id, 'type'=>1,'belong_id'=>$id]);
                                             $listQuestion[]=[
                                                 'question'=>['content'=>$contentQuestion, 'question_id'=>count($listQuestion)+1, 'type'=>2],
                                                 'choices'=>$choices,
@@ -225,6 +228,9 @@ public function detail($id){
                                                 'explan'=>$explan
                                             ]; 
                                         }
+                                        foreach($choices as $choice){
+                                             $listAnswers[]=$choice;
+                                        };
                                         $contentQuestion='';
                                         $result=null;
                                         $choices=[];
@@ -240,12 +246,14 @@ public function detail($id){
                                     if(count($stackClose)==0){
                                             if(!$isEndContentQuestion){
                                                 $contentQuestion.=$temp;
-                                                $choices[]=['content'=>'','question_id'=>1];
+                                                $question=Question::create(['content'=>$contentQuestion, 'user_id'=>1,'mathML'=>$contentQuestion, 'subject_id'=>1,'type'=>2,'scope'=>1]);
+                                                QuestionDo::create(['question_id'=>$question->id, 'type'=>1,'belong_id'=>$id]);
+                                                $choices[]=['content'=>'','question_id'=>$question->id];
                                             }else{
                                                 if(count($choices)>=1){
                                                     $choices[count($choices)-1]['content'].=$temp;
                                                 }
-                                                $choices[]=['content'=>'','question_id'=>1];
+                                                $choices[]=['content'=>'','question_id'=>$question->id];
                                             }
                                             $temp='';
                                             $temp.=mb_substr($line, $i, 1, 'UTF-8');
@@ -255,12 +263,14 @@ public function detail($id){
                                         };
                                         if(!$isEndContentQuestion){
                                             $contentQuestion.=$temp;
-                                            $choices[]=['content'=>'','question_id'=>1];
+                                            $question=Question::create(['content'=>$contentQuestion, 'user_id'=>1,'mathML'=>$contentQuestion, 'subject_id'=>1,'type'=>2,'scope'=>1]);
+                                            QuestionDo::create(['question_id'=>$question->id, 'type'=>1,'belong_id'=>$id]);
+                                            $choices[]=['content'=>'','question_id'=>$question->id];
                                         }else{
                                             if(count($choices)>=1){
                                                     $choices[count($choices)-1]['content'].=$temp;
                                             }
-                                            $choices[]=['content'=>'','question_id'=>1];
+                                            $choices[]=['content'=>'','question_id'=>$question->id];
                                         }
                                         $temp='';
                                         foreach($stackOpen as $openTag){
@@ -336,13 +346,17 @@ public function detail($id){
                                                 }else{
                                                     $contentQuestion.='';
                                                 }
+                                                $question=Question::create(['content'=>$contentQuestion, 'user_id'=>1,'mathML'=>$contentQuestion, 'subject_id'=>1,'type'=>2,'scope'=>1]);
+                                                QuestionDo::create(['question_id'=>$question->id, 'type'=>1,'belong_id'=>$id]);
                                                 $listQuestion[]=[
-                                                    'question'=>['content'=>$contentQuestion, 'question_id'=>count($listQuestion)+1, 'type'=>2],
+                                                    'question'=>['content'=>$contentQuestion, 'question_id'=>$question->id, 'type'=>2],
                                                     'choices'=>$choices,
                                                     'solutions'=>$result,
                                                     'explan'=>$explan
                                                 ]; 
-                                               
+                                                foreach($choices as $choice){
+                                                       $listAnswers[]=$choice;
+                                                };
                                                 $temp='';
                                                 foreach($stackOpen as $openTag){
                                                         $temp.=$openTag;
@@ -398,6 +412,10 @@ public function detail($id){
         }else{
             $contentQuestion=$temp;
         }
+        foreach($choices as $choice){
+            $listAnswers[]=$choice;
+        };  
+        AnswerQuestionTest::insert($listAnswers);
         $listQuestion[]=[
                             'question'=>['content'=>$contentQuestion, 'question_id'=>count($listQuestion)+1, 'type'=>2],
                             'choices'=>$choices,
@@ -675,19 +693,23 @@ public function listQuestionUpdate($idTest, $current_page){
                     $dataQuestion = null; 
                     $dataQuestion['items'] = ItemSubjectQuestion::leftJoin('item_subjects', 'item_subjects.id', '=', 'item_subject_questions.id')->select('item_subject_questions.item_subject_id as id', 'item_subjects.name as name')->where('item_subject_questions.question_id', '=', $question['question_id'])->get();
                     if($question['type']==2){
-                        $choices = $this->answerQuestionTestRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");
+                        $answers = $this->answerQuestionTestRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");
                         $dataQuestion['question']=$question;
-                        $dataQuestion['choices']=$choices;
+                        $dataQuestion['answers']=$answers;
                         
                         // dd($dataQuestion);
                     }else{
+                        $answers = $this->answerQuestionTestRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");
                         $dataQuestion['question']=$question;
-                    
+                        $dataQuestion['answers']=$answers;
                     }
-                     if($question['scope']==0){
-                       $solutions=$this->answerNormalRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");;
+                    if($question['scope']==0){
+                       $discusses=$this->answerNormalRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");;
+                       $dataQuestion['discusses']=$discusses?$discusses:[];
                     }
-                    $dataQuestion['solutions']=$solutions;
+                    $solutions=[];
+                    $solutions=ResultQuestion::where('question_id', $question['question_id'])->select(['answer_question_test_id'])->get();
+                    $dataQuestion['solutions']=$solutions?$solutions:[];
                     $dataQuestions['questions'][]=$dataQuestion;
                 }
             }else{
@@ -697,20 +719,16 @@ public function listQuestionUpdate($idTest, $current_page){
             
                 foreach ($listQuestions['questions'] as $question) {
                     $dataQuestion = null; 
-                      $dataQuestion['items'] = ItemSubjectQuestion::leftJoin('item_subjects', 'item_subjects.id', '=', 'item_subject_questions.item_subject_id')->select('item_subject_questions.item_subject_id as id', 'item_subjects.name as name')->where('item_subject_questions.question_id', '=', $question['question_id'])->get();
-                    if($question['type']==2){
-                        $choices = $this->answerQuestionTestRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");
-                        $dataQuestion['question']=$question;
-                        $dataQuestion['choices']=$choices;
-                        // dd($dataQuestion);
-                    }else{
-                            $dataQuestion['question']=$question;
+                    $dataQuestion['items'] = ItemSubjectQuestion::leftJoin('item_subjects', 'item_subjects.id', '=', 'item_subject_questions.item_subject_id')->select('item_subject_questions.item_subject_id as id', 'item_subjects.name as name')->where('item_subject_questions.question_id', '=', $question['question_id'])->get();
+                    $answers = $this->answerQuestionTestRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");
+                    $dataQuestion['question']=$question;
+                    $dataQuestion['answers']=$answers;
+                    if($question['scope']==0){
+                       $discusses=$this->answerNormalRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");;
+                       $dataQuestion['discusses']=$discusses?$discusses:[];
                     }
-                    $solutions = [];
-                     if($question['scope']==0){
-                       $solutions=$this->answerNormalRepository->findWhere(['question_id' => $question['question_id']], ['*'], "");;
-                    }
-                    $dataQuestion['solutions']=$solutions;
+                    $solutions=ResultQuestion::where('question_id', $question['question_id'])->pluck('answer_question_test_id')->toArray();
+                    $dataQuestion['solutions']=$solutions?$solutions:[];
                     $dataQuestions['questions'][]=$dataQuestion;
                 }
             }
@@ -732,24 +750,16 @@ public function nummericalQuestionUpdate($idTest, $request){
         $test = $this->testRepository->find($idTest);
         $data = [];
         $list = [];
+        $listComplete=ResultQuestion::leftJoin('answer_question_tests','answer_question_tests.question_id','=','result_questions.answer_question_test_id')->where('answer_question_tests.content','<>',null)->pluck('result_questions.question_id')->toArray();
        for($i=1;$i<=$test->total_page;$i++){
             $listQuestionPage = $this->questionRepository->findByIdTest($idTest, $i,  1);
             foreach($listQuestionPage['questions'] as $question){
                 $item = [];
-                if($question->type==2){
-                    if($question->result_id!=null){
+                if(in_array( $question->question_id, $listComplete)){
                       $item = ['id' => $question->question_id, 'page' => $question->page, 'index' => $question->index, 'type' => 1];
-                    }else{  
+                }else{  
                       $item = ['id' => $question->question_id, 'page' => $question->page, 'index' => $question->index, 'type' => 0];
-                    };
-                }else{
-                    if($question->contentResult!=null){
-                      $item = ['id' => $question->question_id, 'page' => $question->page, 'index' => $question->index, 'type' => 1];
-                    }else{  
-                      $item = ['id' => $question->question_id, 'page' => $question->page, 'index' => $question->index, 'type' => 0];
-                    };
-                }
-                
+                };
                 $list[] = $item;
             };
        }

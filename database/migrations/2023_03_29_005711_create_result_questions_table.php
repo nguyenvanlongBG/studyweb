@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('question_competitions', function (Blueprint $table) {
+        Schema::create('result_questions', function (Blueprint $table) {
             $table->integer('id', true);
             $table->integer('question_id');
-            $table->integer('test_id');
-            $table->integer('user_id');
-            $table->tinyInteger('role');
-            // role không được xem, được xem, được làm
+            $table->integer('answer_question_test_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question_competitions');
+        Schema::dropIfExists('result_questions');
     }
 };

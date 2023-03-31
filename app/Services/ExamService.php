@@ -107,7 +107,7 @@ public function createNew($data){
                 foreach ($listQuestions['questions'] as $question) {
                 $dataQuestion = null;
                  $question['answer'] = null;
-                  if (array_key_exists($question['question_id'], $answers)) {
+                if (array_key_exists($question['question_id'], $answers)) {
                          $question['answer'] = $answers[$question['question_id']];
                 }
                 if($question['type']==2){
