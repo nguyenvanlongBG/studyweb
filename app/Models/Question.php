@@ -26,14 +26,12 @@ class Question extends Model
         $this->hasMany(Answer::class);
     }
     public function getQuestionNoResult(){
-        $sendQuestion = $this->leftJoin('property_question_tests', 'property_question_tests.question_id', '=', 'questions.id')->first();
+        $sendQuestion = $this->leftJoin('question_dos', 'question_dos.question_id', '=', 'questions.id')->first();
         $sendQuestion['results']=[];
         return $sendQuestion;
     }
     public function getQuestionHasResult(){
-        $sendQuestion = $this->leftJoin('property_question_tests', 'property_question_tests.question_id', '=', 'questions.id')->first();
-        $results=ResultQuestion::leftJoin('answer_question_tests','answer_question_tests.id','=','result_questions.answer_question_test_id')->where('result_questions.question_id','=',$this->id)->first();
-        $sendQuestion['results']=$results;
+        $sendQuestion = $this->leftJoin('question_dos', 'question_dos.question_id', '=', 'questions.id')->select('questions.*','question_dos.type As type_belong', 'question_dos.question_id as question_id','question_dos.belong_id as belong_id', 'question_dos.point as point', 'question_dos.index as index')->first();
         return $sendQuestion;
     }
 }

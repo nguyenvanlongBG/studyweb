@@ -4,7 +4,6 @@ use App\Models\AnswerQuestionTest;
 use App\Models\AnswerTest;
 use App\Models\Exam;
 use App\Models\ItemSubjectQuestion;
-use App\Models\PropertyQuestion;
 use App\Models\Question;
 use App\Models\QuestionBelong;
 use App\Models\QuestionDo;
@@ -14,7 +13,6 @@ use App\Models\UserTest;
 use App\Repositories\Answer\AnswerNormalRepository;
 use App\Repositories\Answer\AnswerQuestionTestRepository;
 use App\Repositories\Exam\ExamRepository;
-use App\Repositories\Question\PropertyQuestionRepository;
 use App\Repositories\Question\QuestionRepository;
 use App\Repositories\Test\TestRepository;
 use Illuminate\Http\Request;
@@ -27,18 +25,16 @@ use TheSeer\Tokenizer\Exception;
 class TestService extends BaseService{
 private TestRepository $testRepository;
 private QuestionRepository $questionRepository;
-private PropertyQuestionRepository $propertyQuestionRepository;
 private ExamRepository $examRepository;
 private AnswerQuestionTestRepository $answerQuestionTestRepository;// private AnswerQuesionTestRepository $answerQuestionTestRepository;
     private AnswerNormalRepository $answerNormalRepository;
-public function __construct(TestRepository $testRepository, QuestionRepository $questionRepository, AnswerQuestionTestRepository $answerQuestionTestRepository, PropertyQuestionRepository $propertyQuestionRepository, ExamRepository $examRepository, AnswerNormalRepository $answerNormalRepository)
+public function __construct(TestRepository $testRepository, QuestionRepository $questionRepository, AnswerQuestionTestRepository $answerQuestionTestRepository, ExamRepository $examRepository, AnswerNormalRepository $answerNormalRepository)
 {
     $this->testRepository=$testRepository;
     $this->questionRepository=$questionRepository;
     $this->answerQuestionTestRepository=$answerQuestionTestRepository;
-    $this->propertyQuestionRepository=$propertyQuestionRepository;
     $this->examRepository=$examRepository;
-        $this->answerNormalRepository = $answerNormalRepository;
+    $this->answerNormalRepository = $answerNormalRepository;
 }
 public function list($request){
         $filters=[];
@@ -750,7 +746,7 @@ public function nummericalQuestionUpdate($idTest, $request){
         $test = $this->testRepository->find($idTest);
         $data = [];
         $list = [];
-        $listComplete=ResultQuestion::leftJoin('answer_question_tests','answer_question_tests.question_id','=','result_questions.answer_question_test_id')->where('answer_question_tests.content','<>',null)->pluck('result_questions.question_id')->toArray();
+        $listComplete=ResultQuestion::leftJoin('answer_question_tests','answer_question_tests.id','=','result_questions.answer_question_test_id')->where('answer_question_tests.content','<>',null)->pluck('result_questions.question_id')->toArray();
        for($i=1;$i<=$test->total_page;$i++){
             $listQuestionPage = $this->questionRepository->findByIdTest($idTest, $i,  1);
             foreach($listQuestionPage['questions'] as $question){

@@ -5,12 +5,10 @@ use App\Models\AnswerQuestionTest;
 use App\Models\ItemSubject;
 use App\Models\ItemSubjectQuestion;
 use App\Models\Question;
-use App\Models\PropertyQuestion;
 use App\Models\QuestionDo;
 use App\Models\ResultQuestion;
 use App\Repositories\Answer\AnswerNormalRepository;
 use App\Repositories\Answer\AnswerQuestionTestRepository;
-use App\Repositories\Question\PropertyQuestionRepository;
 use App\Repositories\Question\QuestionRepository;
 use App\Repositories\Test\TestRepository;
 use Illuminate\Http\Request;
@@ -24,13 +22,11 @@ private QuestionRepository $questionRepository;
 private AnswerNormalRepository $answerNormalRepository;
 private AnswerQuestionTestRepository $answerQuestionTestRepository;
 
-private PropertyQuestionRepository $propertyQuestionRepository;
-public function __construct(TestRepository $testRepository,QuestionRepository $questionRepository, AnswerNormalRepository $answerNormalRepository, PropertyQuestionRepository $propertyQuestionRepository, AnswerQuestionTestRepository $answerQuestionTestRepository)
+public function __construct(TestRepository $testRepository,QuestionRepository $questionRepository, AnswerNormalRepository $answerNormalRepository, AnswerQuestionTestRepository $answerQuestionTestRepository)
 {
     $this->testRepository=$testRepository;
     $this->questionRepository=$questionRepository;
     $this->answerNormalRepository = $answerNormalRepository;
-    $this->propertyQuestionRepository= $propertyQuestionRepository;
     $this->answerQuestionTestRepository=$answerQuestionTestRepository;
 }
 public function storeImage(Request $request){
@@ -72,7 +68,7 @@ public function handle($request){
                 if ($newQuestion->type == 2) {
                     if ($request->answer['create'] != []) {
                         foreach ($request->answer['create'] as $choose) {
-                            if (!in_array($choose['id'], $request->solutions)) {
+                            if (!in_array($choose['id'], $request->solutions['create'])) {
                                 $this->answerQuestionTestRepository->create(['content' => $choose['content'], 'question_id' => $newQuestion->id]);
                             } else {
                                 $result=$this->answerQuestionTestRepository->create(['content' => $choose['content'], 'question_id' => $newQuestion->id]);
@@ -83,7 +79,7 @@ public function handle($request){
                 } else {
                    if ($request->answer['create'] != []) {
                         foreach ($request->answer['create'] as $choose) {
-                            if (!in_array($choose['id'], $request->solutions)) {
+                            if (!in_array($choose['id'], $request->solutions['create'])) {
                                 $this->answerQuestionTestRepository->create(['content' => $choose['content'], 'question_id' => $newQuestion->id]);
                             } else {
                                 $result=$this->answerQuestionTestRepository->create(['content' => $choose['content'], 'question_id' => $newQuestion->id]);
@@ -142,7 +138,7 @@ public function handle($request){
                     ;
                     if ($request->answer['create'] != []) {
                         foreach ($request->answer['create'] as $choose) {
-                           if (!in_array($choose['id'], $request->solutions)) {
+                           if (!in_array($choose['id'], $request->solutions['create'])) {
                                 $this->answerQuestionTestRepository->create(['content' => $choose['content'], 'question_id' =>$request->question['question_id']]);
                             } else {
                                 $result=$this->answerQuestionTestRepository->create(['content' => $choose['content'], 'question_id' => $request->question['question_id']]);
@@ -157,7 +153,7 @@ public function handle($request){
                     }
                     foreach($request->solutions['delete'] as $solution){
                          if(is_int($solution)){
-                            $result=ResultQuestion::find($solution);
+                            $result=ResultQuestion::where('answer_question_test_id', $solution)->first();
                             $result->delete();
                          }
                     }
@@ -172,10 +168,10 @@ public function handle($request){
                 $question=$this->questionRepository->find($request->question['question_id']);
                 $sendQuestion = $question->getQuestionHasResult();
                 $sendAnswers = $this->answerQuestionTestRepository->findWhere(['question_id' => $question->id], ['*'], "");
-                $solutions=ResultQuestion::where(['question_id'=>$question->id])->get();
+                $solutions=ResultQuestion::where('question_id', $question->id)->pluck('answer_question_test_id')->toArray();
                 $data['question'] = $sendQuestion;
                 $data['answers'] = $sendAnswers;
-                $data['solutions']=$solutions;
+                $data['solutions']=$solutions?$solutions:[];
                  DB::commit();
                 return $this->sendResponse($data, "Sucessful");
             }

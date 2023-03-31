@@ -25,7 +25,8 @@ class QuestionRepository extends AbstractRepository{
 public function findByIdTest($id, $page, $type){
     $query=$this->model->leftJoin('question_dos', 'question_dos.question_id', '=', 'questions.id')->where('question_dos.type','=', 1)->select('questions.*', 'question_dos.question_id', 'question_dos.point', 'question_dos.index', 'question_dos.belong_id' );
     $data = [];
-    $questions=$query->orderBy('index')->get()->unique('question_id');
+    // Khi cần thêm index thì thêm orderBy('index')
+    $questions=$query->get()->unique('question_id');
     $startIndex =  $this->model->join('question_dos', 'question_dos.question_id', '=', 'questions.id')->where('question_dos.belong_id','=', $id)->count()+1;
     $data ['startIndex']=$startIndex;
     if($type==0){
